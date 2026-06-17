@@ -141,67 +141,157 @@
     #list-wrap { display:none; }
 
     /* ════ ALBUM PAGE ════ */
-    .album-wrap { max-width:580px; width:100%; z-index:1; }
-    .album-header { text-align:center; margin-bottom:32px; }
-    .album-header h2 { font-family:'Playfair Display',serif; font-size:1.9rem; color:var(--mocha); }
+    #page-album { background: #EDE0D4; }
+
+    .album-wrap { max-width: 620px; width: 100%; z-index: 1; }
+
+    /* Album cover header */
+    .album-header {
+      text-align: center; margin-bottom: 36px;
+      background: var(--cream);
+      border-radius: 20px;
+      padding: 32px 28px 28px;
+      box-shadow: 0 4px 24px rgba(92,61,53,.13), inset 0 0 0 6px rgba(232,165,152,.15);
+      position: relative;
+      border: 2px solid rgba(232,165,152,.3);
+    }
+    .album-header::before {
+      content: ''; position: absolute; inset: 6px;
+      border: 1px dashed rgba(232,165,152,.4); border-radius: 14px; pointer-events: none;
+    }
+    .album-header h2 { font-family:'Playfair Display',serif; font-size:2rem; color:var(--mocha); }
     .album-header h2 em { font-style:italic; color:var(--rose); }
-    .album-header p { font-size:.78rem; color:#9B7B74; margin-top:6px; letter-spacing:.07em; text-transform:uppercase; }
-    .album-empty { text-align:center; padding:60px 20px; color:#C4A49E; font-size:.9rem; font-style:italic; }
+    .album-header p { font-size:.78rem; color:#9B7B74; margin-top:6px; letter-spacing:.09em; text-transform:uppercase; }
+    .album-header .album-cover-hearts { font-size:1.4rem; letter-spacing:8px; margin-bottom:10px; display:block; }
 
-    /* Album memory card */
-    .mem-card { background:var(--cream); border-radius:22px; margin-bottom:28px; overflow:hidden; box-shadow:0 6px 28px rgba(92,61,53,.09); animation:cardIn .4s cubic-bezier(.22,1,.36,1) both; transition:transform .28s,box-shadow .28s; }
-    .mem-card:hover { transform:translateY(-4px); box-shadow:0 14px 40px rgba(92,61,53,.14); }
+    .album-empty { text-align:center; padding:60px 20px; color:#9B7B74; font-size:.92rem; font-style:italic; background:rgba(255,255,255,.5); border-radius:16px; }
 
-    .mem-card-header { padding:18px 20px 14px; display:flex; align-items:flex-start; gap:12px; border-bottom:1px solid var(--blush); }
-    .mem-emoji { font-size:2rem; flex-shrink:0; transition:transform .25s; }
-    .mem-card:hover .mem-emoji { transform:scale(1.15) rotate(6deg); }
-    .mem-info { flex:1; }
-    .mem-title { font-family:'Playfair Display',serif; font-size:1.15rem; color:var(--mocha); font-weight:500; }
-    .mem-meta { display:flex; gap:8px; margin-top:5px; flex-wrap:wrap; }
-    .mem-badge { border-radius:99px; padding:3px 10px; font-size:.68rem; font-weight:500; }
-    .mem-badge.done-badge { background:#EFF6EC; color:#4A6B42; }
-    .mem-badge.photo-badge { background:rgba(232,165,152,.2); color:#9B4F40; }
-    .mem-badge.note-badge { background:rgba(168,184,156,.18); color:#4A6B42; }
-    .mem-date { font-size:.7rem; color:#C4A49E; margin-top:4px; }
+    /* Each adventure = a scrapbook page spread */
+    .mem-spread {
+      margin-bottom: 40px;
+      animation: cardIn .5s cubic-bezier(.22,1,.36,1) both;
+    }
 
-    /* Notes in album */
-    .mem-notes { padding:14px 20px; background:rgba(249,242,238,.6); border-bottom:1px solid var(--blush); }
-    .mem-notes-label { font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:#9B7B74; margin-bottom:6px; }
-    .mem-notes-text { font-size:.88rem; color:var(--mocha); line-height:1.6; white-space:pre-wrap; font-style:italic; }
+    /* Washi tape tab at top */
+    .mem-tape {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: -10px; padding-left: 20px; position: relative; z-index: 2;
+    }
+    .tape-strip {
+      background: rgba(232,165,152,.55);
+      padding: 4px 18px; border-radius: 3px;
+      font-size: .72rem; color: var(--mocha); font-weight: 500;
+      letter-spacing: .06em; text-transform: uppercase;
+      box-shadow: 0 2px 6px rgba(92,61,53,.1);
+      transform: rotate(-1deg);
+    }
+    .tape-strip.sage { background: rgba(168,184,156,.55); transform: rotate(1deg); }
 
-    /* Photo layout — beautiful masonry-style grid */
-    .mem-photos { padding:14px 16px 16px; }
-    .mem-photos-label { font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:#9B7B74; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; }
-    .mem-photos-label .photo-count { font-style:normal; color:var(--rose); font-weight:500; }
+    /* Main scrapbook page */
+    .mem-page {
+      background: #FFFDF9;
+      border-radius: 4px 18px 18px 18px;
+      box-shadow: 0 6px 32px rgba(92,61,53,.12), 3px 3px 0 rgba(92,61,53,.06);
+      overflow: hidden;
+      position: relative;
+    }
+    /* Torn paper edge at top */
+    .mem-page::before {
+      content: ''; display: block; height: 8px;
+      background: repeating-linear-gradient(90deg, #FFFDF9 0px, #FFFDF9 8px, #F5EDE4 8px, #F5EDE4 9px, #FFFDF9 9px, #FFFDF9 18px);
+      opacity: .7;
+    }
 
-    /* Person sections in album */
-    .mem-person-section { margin-bottom:14px; }
-    .mem-person-header { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
-    .mem-person-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-    .mem-person-dot.y { background:var(--rose); }
-    .mem-person-dot.s { background:var(--sage); }
-    .mem-person-name { font-size:.78rem; font-weight:600; color:var(--mocha); }
-    .mem-person-count { font-size:.7rem; color:#9B7B74; margin-left:auto; }
+    /* Title row */
+    .mem-title-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 20px 10px;
+      border-bottom: 1px dashed rgba(232,165,152,.4);
+    }
+    .mem-big-emoji { font-size: 2.2rem; transition: transform .25s; flex-shrink: 0; }
+    .mem-spread:hover .mem-big-emoji { transform: scale(1.18) rotate(8deg); }
+    .mem-title-text { flex: 1; }
+    .mem-title { font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--mocha); font-weight:500; }
+    .mem-subtitle { font-size: .72rem; color: #9B7B74; margin-top: 3px; }
+    .mem-done-stamp {
+      flex-shrink: 0; border: 2.5px solid var(--sage); color: var(--sage);
+      border-radius: 8px; padding: 3px 10px; font-size: .68rem; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase; transform: rotate(3deg);
+      opacity: .85;
+    }
 
-    /* Photo grid layouts */
-    .photo-layout { display:grid; gap:4px; border-radius:12px; overflow:hidden; }
-    .photo-layout.one   { grid-template-columns:1fr; }
-    .photo-layout.two   { grid-template-columns:1fr 1fr; }
-    .photo-layout.three { grid-template-columns:2fr 1fr; grid-template-rows:1fr 1fr; }
-    .photo-layout.three .pl-ph:first-child { grid-row:1/3; }
-    .photo-layout.four  { grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; }
-    .photo-layout.many  { grid-template-columns:repeat(3,1fr); }
+    /* Notes — looks like handwritten paper */
+    .mem-notes-wrap {
+      margin: 14px 18px 0;
+      background: #FFFEF5;
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-left: 3px solid var(--rose);
+      position: relative;
+    }
+    .mem-notes-wrap::before {
+      content: '✏️'; position: absolute; top: -10px; left: 12px;
+      font-size: .85rem; background: #FFFEF5; padding: 0 4px;
+    }
+    .mem-notes-icon { font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; color: #9B7B74; margin-bottom: 6px; }
+    .mem-notes-text {
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: .9rem; color: var(--mocha); line-height: 1.75;
+      white-space: pre-wrap;
+    }
 
-    .pl-ph { position:relative; overflow:hidden; aspect-ratio:1; }
-    .photo-layout.one .pl-ph { aspect-ratio:16/9; max-height:260px; }
-    .photo-layout.two .pl-ph { aspect-ratio:1; }
-    .photo-layout.three .pl-ph:first-child { aspect-ratio:auto; }
+    /* Photos section */
+    .mem-photos-wrap { padding: 14px 18px 18px; }
 
-    .pl-ph img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .35s; }
-    .pl-ph:hover img { transform:scale(1.07); }
-    .pl-ph::after { content:'🔍'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:1.3rem; opacity:0; background:rgba(92,61,53,.22); transition:opacity .25s; }
-    .pl-ph:hover::after { opacity:1; }
-    .pl-ph .more-overlay { position:absolute; inset:0; background:rgba(92,61,53,.55); display:flex; align-items:center; justify-content:center; color:white; font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:500; }
+    /* Per-person polaroid cluster */
+    .mem-person-cluster { margin-bottom: 18px; }
+    .mem-person-label {
+      display: flex; align-items: center; gap: 7px; margin-bottom: 10px;
+    }
+    .mem-person-ribbon {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 12px; border-radius: 99px; font-size: .72rem; font-weight: 600;
+      letter-spacing: .04em;
+    }
+    .mem-person-ribbon.y { background: rgba(232,165,152,.2); color: #9B4F40; }
+    .mem-person-ribbon.s { background: rgba(168,184,156,.22); color: #3D6B42; }
+
+    /* Polaroid photos */
+    .polaroid-grid {
+      display: flex; flex-wrap: wrap; gap: 12px;
+    }
+    .polaroid {
+      background: white;
+      padding: 7px 7px 24px;
+      box-shadow: 0 4px 14px rgba(92,61,53,.14), 0 1px 3px rgba(92,61,53,.08);
+      border-radius: 2px;
+      width: calc(50% - 6px);
+      transition: transform .3s, box-shadow .3s;
+      position: relative;
+    }
+    .polaroid:nth-child(odd)  { transform: rotate(-1.5deg); }
+    .polaroid:nth-child(even) { transform: rotate(1.2deg); }
+    .polaroid:hover { transform: rotate(0deg) scale(1.04) translateY(-4px) !important; box-shadow: 0 12px 30px rgba(92,61,53,.2); z-index: 10; }
+    .polaroid img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; border-radius: 1px; }
+    .polaroid .pol-caption {
+      text-align: center; margin-top: 6px;
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: .68rem; color: #9B7B74;
+    }
+    .polaroid .pol-more {
+      position: absolute; inset: 7px 7px 24px;
+      background: rgba(92,61,53,.5); display: flex; align-items: center; justify-content: center;
+      color: white; font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 500;
+      border-radius: 1px;
+    }
+
+    /* Decorative corner sticker */
+    .mem-sticker {
+      position: absolute; bottom: 12px; right: 16px;
+      font-size: 1.4rem; opacity: .5;
+      animation: floatSticker 4s ease-in-out infinite;
+    }
+    @keyframes floatSticker { 0%,100%{transform:rotate(-8deg) scale(1)} 50%{transform:rotate(-8deg) scale(1.12)} }
 
     /* Lightbox */
     #lightbox { position:fixed; inset:0; background:rgba(0,0,0,.92); z-index:200; display:none; align-items:center; justify-content:center; padding:20px; animation:fadeIn .2s ease; }
@@ -251,15 +341,22 @@
       #add-panel { padding: 14px 14px; }
       #new-text { font-size: .88rem; padding: 9px 12px; }
       .album-wrap { padding: 0; }
+      .album-header { padding: 22px 18px 20px; border-radius: 14px; }
       .album-header h2 { font-size: 1.5rem; }
-      .mem-card { border-radius: 16px; margin-bottom: 18px; }
-      .mem-card:hover { transform: none; box-shadow: 0 6px 28px rgba(92,61,53,.09); }
-      .mem-card-header { padding: 14px 14px 12px; gap: 10px; }
-      .mem-emoji { font-size: 1.6rem; }
+      .mem-spread { margin-bottom: 28px; }
+      .mem-tape { padding-left: 12px; }
+      .tape-strip { font-size: .68rem; padding: 3px 12px; }
+      .mem-page::before { height: 6px; }
+      .mem-title-row { padding: 12px 12px 10px; gap: 8px; }
+      .mem-big-emoji { font-size: 1.7rem; }
       .mem-title { font-size: 1rem; }
-      .mem-notes { padding: 12px 14px; }
+      .mem-notes-wrap { margin: 10px 12px 0; padding: 10px 12px; }
       .mem-notes-text { font-size: .84rem; }
-      .mem-photos { padding: 10px 12px 12px; }
+      .mem-photos-wrap { padding: 10px 10px 12px; }
+      .polaroid-grid { gap: 8px; }
+      .polaroid { width: calc(50% - 4px); padding: 5px 5px 20px; }
+      .pol-caption { font-size: .6rem; }
+      .mem-sticker { font-size: 1.1rem; bottom: 8px; right: 10px; }
       .photo-layout.three { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
       .photo-layout.three .pl-ph:first-child { grid-row: auto; }
       .photo-layout.many { grid-template-columns: repeat(2,1fr); }
@@ -328,7 +425,7 @@
 <div class="page" id="page-album">
   <div class="album-wrap">
     <div class="album-header">
-      <span class="hearts">♡ ♡ ♡</span>
+      <span class="album-cover-hearts">♡ ♡ ♡</span>
       <h2>Our <em>Memories</em></h2>
       <p>every adventure, captured</p>
       <div class="divider"></div>
@@ -511,6 +608,8 @@
   }
 
   // ── RENDER ALBUM ───────────────────────────────────────
+  const STICKERS = ["🌸","💕","✨","🌷","🎀","🫶","🌼","💫","🍃","🩷"];
+
   function renderAlbum(data){
     const el=document.getElementById("album-content");
     const entries=Object.entries(data);
@@ -525,90 +624,71 @@
       const youPhotos=item.photos&&item.photos.youssef?Object.entries(item.photos.youssef):[];
       const shahdPhotos=item.photos&&item.photos.shahd?Object.entries(item.photos.shahd):[];
       const totalPhotos=youPhotos.length+shahdPhotos.length;
+      const sticker=STICKERS[cardIdx%STICKERS.length];
 
-      const card=document.createElement("div");
-      card.className="mem-card";
-      card.style.animationDelay=(cardIdx*0.08)+"s";
+      const spread=document.createElement("div");
+      spread.className="mem-spread";
+      spread.style.animationDelay=(cardIdx*0.1)+"s";
 
-      // Badges
-      const badges=[];
-      if(item.done) badges.push(`<span class="mem-badge done-badge">✓ done</span>`);
-      if(totalPhotos) badges.push(`<span class="mem-badge photo-badge">📷 ${totalPhotos} photo${totalPhotos!==1?"s":""}</span>`);
-      if(item.notes&&item.notes.trim()) badges.push(`<span class="mem-badge note-badge">📝 has notes</span>`);
+      const tape=document.createElement("div");
+      tape.className="mem-tape";
+      tape.innerHTML=`<span class="tape-strip ${cardIdx%2===0?'':'sage'}">${item.emoji} ${esc(item.text)}</span>`;
+      spread.appendChild(tape);
 
-      card.innerHTML=`
-        <div class="mem-card-header">
-          <span class="mem-emoji">${item.emoji}</span>
-          <div class="mem-info">
+      const page=document.createElement("div");
+      page.className="mem-page";
+
+      page.innerHTML=`
+        <div class="mem-title-row">
+          <span class="mem-big-emoji">${item.emoji}</span>
+          <div class="mem-title-text">
             <div class="mem-title">${esc(item.text)}</div>
-            <div class="mem-meta">${badges.join("")}</div>
+            <div class="mem-subtitle">${totalPhotos} photo${totalPhotos!==1?"s":""}${item.notes&&item.notes.trim()?" · has notes":""}</div>
           </div>
+          ${item.done?`<span class="mem-done-stamp">✓ done</span>`:""}
         </div>
         ${item.notes&&item.notes.trim()?`
-        <div class="mem-notes">
-          <div class="mem-notes-label">📝 notes</div>
+        <div class="mem-notes-wrap">
+          <div class="mem-notes-icon">our notes</div>
           <div class="mem-notes-text">${esc(item.notes)}</div>
         </div>`:""}
-        ${totalPhotos?`<div class="mem-photos">
-          <div class="mem-photos-label">photos <span class="photo-count">${totalPhotos} total</span></div>
-          ${youPhotos.length?`<div class="mem-person-section">
-            <div class="mem-person-header">
-              <div class="mem-person-dot y"></div>
-              <span class="mem-person-name">Youssef</span>
-              <span class="mem-person-count">${youPhotos.length} photo${youPhotos.length!==1?"s":""}</span>
-            </div>
-            <div class="photo-layout ${layoutClass(youPhotos.length)}" id="alb-y-${id}"></div>
-          </div>`:""}
-          ${shahdPhotos.length?`<div class="mem-person-section">
-            <div class="mem-person-header">
-              <div class="mem-person-dot s"></div>
-              <span class="mem-person-name">Shahd</span>
-              <span class="mem-person-count">${shahdPhotos.length} photo${shahdPhotos.length!==1?"s":""}</span>
-            </div>
-            <div class="photo-layout ${layoutClass(shahdPhotos.length)}" id="alb-s-${id}"></div>
-          </div>`:""}
-        </div>`:""}`;
+        ${totalPhotos?`<div class="mem-photos-wrap" id="mpw-${id}"></div>`:""}
+        <span class="mem-sticker">${sticker}</span>
+      `;
 
-      // Populate album photo layouts
-      if(youPhotos.length){
-        const grid=card.querySelector(`#alb-y-${id}`);
-        const shown=Math.min(youPhotos.length,5);
-        youPhotos.slice(0,shown).forEach(([,pd],pi)=>{
-          const div=document.createElement("div");div.className="pl-ph";
-          if(pi===shown-1&&youPhotos.length>shown){
-            div.innerHTML=`<img src="${pd.url}" loading="lazy"/><div class="more-overlay">+${youPhotos.length-shown+1}</div>`;
-          } else {
-            div.innerHTML=`<img src="${pd.url}" loading="lazy"/>`;
-          }
-          div.addEventListener("click",()=>openLightbox(pd.url));
-          grid.appendChild(div);
+      if(totalPhotos){
+        const pw=page.querySelector(`#mpw-${id}`);
+        ["youssef","shahd"].forEach(person=>{
+          const photos=person==="youssef"?youPhotos:shahdPhotos;
+          if(!photos.length) return;
+          const isY=person==="youssef";
+          const cluster=document.createElement("div");
+          cluster.className="mem-person-cluster";
+          cluster.innerHTML=`<div class="mem-person-label"><span class="mem-person-ribbon ${isY?"y":"s"}">${isY?"🌸 Youssef":"🌷 Shahd"} · ${photos.length} photo${photos.length!==1?"s":""}</span></div>`;
+          const pgrid=document.createElement("div");
+          pgrid.className="polaroid-grid";
+          photos.forEach(([,pd],pi)=>{
+            if(pi>3) return;
+            const pol=document.createElement("div");
+            pol.className="polaroid";
+            if(pi===3&&photos.length>4){
+              pol.innerHTML=`<img src="${pd.url}" loading="lazy"/><div class="pol-more">+${photos.length-3}</div><div class="pol-caption">more memories…</div>`;
+            } else {
+              pol.innerHTML=`<img src="${pd.url}" loading="lazy"/><div class="pol-caption">${esc(item.text)}</div>`;
+            }
+            pol.addEventListener("click",()=>openLightbox(pd.url));
+            pgrid.appendChild(pol);
+          });
+          cluster.appendChild(pgrid);
+          pw.appendChild(cluster);
         });
       }
-      if(shahdPhotos.length){
-        const grid=card.querySelector(`#alb-s-${id}`);
-        const shown=Math.min(shahdPhotos.length,5);
-        shahdPhotos.slice(0,shown).forEach(([,pd],pi)=>{
-          const div=document.createElement("div");div.className="pl-ph";
-          if(pi===shown-1&&shahdPhotos.length>shown){
-            div.innerHTML=`<img src="${pd.url}" loading="lazy"/><div class="more-overlay">+${shahdPhotos.length-shown+1}</div>`;
-          } else {
-            div.innerHTML=`<img src="${pd.url}" loading="lazy"/>`;
-          }
-          div.addEventListener("click",()=>openLightbox(pd.url));
-          grid.appendChild(div);
-        });
-      }
-      el.appendChild(card);
+
+      spread.appendChild(page);
+      el.appendChild(spread);
     });
   }
 
-  function layoutClass(n){
-    if(n===1)return"one";
-    if(n===2)return"two";
-    if(n===3)return"three";
-    if(n===4)return"four";
-    return"many";
-  }
 
   // ── PHOTO UPLOAD ───────────────────────────────────────
   function uploadPhoto(file,id,person){
