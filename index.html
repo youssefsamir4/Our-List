@@ -219,6 +219,66 @@
     /* Toast */
     #toast { position:fixed; bottom:70px; left:50%; transform:translateX(-50%) translateY(16px); background:var(--mocha); color:#FBF6F3; border-radius:99px; padding:10px 22px; font-size:.82rem; box-shadow:0 4px 20px rgba(92,61,53,.3); z-index:999; white-space:nowrap; opacity:0; transition:opacity .3s,transform .3s; pointer-events:none; }
     #confetti-canvas { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:998; }
+
+    /* ══ MOBILE RESPONSIVE ══ */
+    @media (max-width: 600px) {
+      #cursor, #cursor-trail { display: none; }
+      * { cursor: auto !important; }
+      .slot-thumb .rm-ph { opacity: 1 !important; transform: scale(1) !important; }
+      .page { padding: 16px 10px 80px; }
+      .card { padding: 28px 18px 32px; border-radius: 18px; }
+      .card:hover { transform: none; box-shadow: 0 8px 40px rgba(92,61,53,.10); }
+      h1 { font-size: 1.55rem; }
+      .hearts { font-size: 17px; letter-spacing: 4px; }
+      .item:hover { transform: none; box-shadow: none; border-color: transparent; }
+      .item-row { padding: 12px 10px 12px 12px; gap: 8px; }
+      .item-emoji { font-size: 1.1rem; width: 22px; }
+      .item-text { font-size: .88rem; padding: 2px 4px; }
+      .expand-btn { font-size: .66rem; padding: 4px 7px; }
+      .del-btn { font-size: .75rem; }
+      .notes-section { padding: 12px 12px 8px; }
+      .photos-section { padding: 4px 12px 12px; }
+      .notes-input { font-size: .82rem; min-height: 60px; }
+      .person-uploads { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .person-slot-header { font-size: .7rem; padding: 6px 8px; }
+      .slot-photos { gap: 3px; padding: 4px 4px 0; }
+      .slot-thumb { border-radius: 6px; }
+      .slot-upload { margin: 4px 4px 4px; padding: 8px 4px; }
+      .slot-upload .s-icon { font-size: .95rem; }
+      .slot-upload .s-hint { font-size: .6rem; }
+      #add-open-btn { padding: 12px 14px; font-size: .84rem; }
+      #add-open-btn:hover { transform: none; box-shadow: none; }
+      #add-panel { padding: 14px 14px; }
+      #new-text { font-size: .88rem; padding: 9px 12px; }
+      .album-wrap { padding: 0; }
+      .album-header h2 { font-size: 1.5rem; }
+      .mem-card { border-radius: 16px; margin-bottom: 18px; }
+      .mem-card:hover { transform: none; box-shadow: 0 6px 28px rgba(92,61,53,.09); }
+      .mem-card-header { padding: 14px 14px 12px; gap: 10px; }
+      .mem-emoji { font-size: 1.6rem; }
+      .mem-title { font-size: 1rem; }
+      .mem-notes { padding: 12px 14px; }
+      .mem-notes-text { font-size: .84rem; }
+      .mem-photos { padding: 10px 12px 12px; }
+      .photo-layout.three { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .photo-layout.three .pl-ph:first-child { grid-row: auto; }
+      .photo-layout.many { grid-template-columns: repeat(2,1fr); }
+      .photo-layout.one .pl-ph { max-height: 200px; }
+      .progress-section { margin-top: 20px; }
+      .nav-btn { font-size: .72rem; padding: 10px 6px; }
+      .nav-btn:hover { transform: none; }
+      #lightbox-close { top: 12px; right: 12px; width: 36px; height: 36px; }
+      #toast { font-size: .78rem; padding: 9px 18px; bottom: 76px; max-width: 88vw; white-space: normal; text-align: center; }
+    }
+
+    @media (max-width: 380px) {
+      .card { padding: 22px 14px 26px; }
+      h1 { font-size: 1.32rem; }
+      .item-text { font-size: .82rem; }
+      .expand-btn { font-size: .62rem; padding: 3px 6px; }
+      .person-uploads { gap: 6px; }
+      .mem-title { font-size: .95rem; }
+    }
   </style>
 </head>
 <body>
