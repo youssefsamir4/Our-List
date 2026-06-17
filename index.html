@@ -5,28 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Our Adventure List 💕</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-
-  <!-- ============================================================
-    🔥 FIREBASE SETUP — YOU NEED TO FILL IN YOUR OWN VALUES BELOW
-    Follow the step-by-step guide at the bottom of this file.
-  ============================================================ -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, onValue, set, push, remove, update }
+    import { getDatabase, ref, onValue, push, remove, update }
       from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-    // ✏️ STEP 1 — Paste YOUR Firebase config here (replace every value)
     const firebaseConfig = {
-      apiKey:            "PASTE_YOUR_apiKey_HERE",
-      authDomain:        "PASTE_YOUR_authDomain_HERE",
-      databaseURL:       "PASTE_YOUR_databaseURL_HERE",
-      projectId:         "PASTE_YOUR_projectId_HERE",
-      storageBucket:     "PASTE_YOUR_storageBucket_HERE",
-      messagingSenderId: "PASTE_YOUR_messagingSenderId_HERE",
-      appId:             "PASTE_YOUR_appId_HERE",
+      apiKey:            "AIzaSyCUFKp7pnzvF4L1rvjdU3Uk-2TvT92tMO0",
+      authDomain:        "our-to-do-list-1a666.firebaseapp.com",
+      databaseURL:       "https://our-to-do-list-1a666-default-rtdb.firebaseio.com",
+      projectId:         "our-to-do-list-1a666",
+      storageBucket:     "our-to-do-list-1a666.firebasestorage.app",
+      messagingSenderId: "774503475826",
+      appId:             "1:774503475826:web:a14ac07ce0ecc08a6b30eb"
     };
 
-    // ── Default items seeded once if the database is empty ──────────
     const DEFAULTS = [
       { text: "Spanish Latte",        emoji: "☕" },
       { text: "Bateekh Ne3na3",       emoji: "🍉" },
@@ -41,18 +34,20 @@
       "🍜","🍰","🎭","🎸","🌿","🚴","🏊","🧁","🍕","🎳","🎨","🧘","🌸","🍦",
       "🎲","🍣","🥂","🌙","🎠","🏔️","🫶","🌷","🧋","🪷","🎪"];
 
-    // ── Boot ─────────────────────────────────────────────────────────
-    const app = initializeApp(firebaseConfig);
-    const db  = getDatabase(app);
-    const listRef = ref(db, "adventure-list");
+    let app, db, listRef;
+    try {
+      app = initializeApp(firebaseConfig);
+      db  = getDatabase(app);
+      listRef = ref(db, "adventure-list");
+    } catch(e) {
+      console.error("Firebase init error:", e);
+    }
 
     let seeded = false;
 
-    // Listen for real-time changes
     onValue(listRef, (snapshot) => {
       const data = snapshot.val();
       if (!data) {
-        // First-ever load — seed defaults
         if (!seeded) {
           seeded = true;
           DEFAULTS.forEach(d => push(listRef, { ...d, done: false }));
@@ -60,16 +55,17 @@
         return;
       }
       renderList(data);
+    }, (error) => {
+      console.error("Database error:", error);
+      document.getElementById("loading-msg").textContent = "Connection error. Please refresh.";
     });
 
-    // ── Render ────────────────────────────────────────────────────────
     function renderList(data) {
       const ul = document.getElementById("todo-list");
       ul.innerHTML = "";
-
       const entries = Object.entries(data);
       const doneCount = entries.filter(([, v]) => v.done).length;
-      const total     = entries.length;
+      const total = entries.length;
 
       entries.forEach(([id, item]) => {
         const li = document.createElement("li");
@@ -77,25 +73,20 @@
         li.innerHTML = `
           <div class="check-circle">${item.done ? "✓" : ""}</div>
           <span class="item-emoji">${item.emoji}</span>
-          <span class="item-text">${escHtml(item.text)}</span>
+          <span class="item-text">${esc(item.text)}</span>
           <button class="del-btn" title="remove">✕</button>
         `;
-        li.querySelector(".check-circle").addEventListener("click", () => {
-          update(ref(db, `adventure-list/${id}`), { done: !item.done });
-        });
-        li.querySelector(".item-text").addEventListener("click", () => {
-          update(ref(db, `adventure-list/${id}`), { done: !item.done });
-        });
-        li.querySelector(".del-btn").addEventListener("click", (e) => {
+        li.querySelector(".check-circle").addEventListener("click", () =>
+          update(ref(db, `adventure-list/${id}`), { done: !item.done }));
+        li.querySelector(".item-text").addEventListener("click", () =>
+          update(ref(db, `adventure-list/${id}`), { done: !item.done }));
+        li.querySelector(".del-btn").addEventListener("click", e => {
           e.stopPropagation();
-          if (confirm(`Remove "${item.text}"?`)) {
-            remove(ref(db, `adventure-list/${id}`));
-          }
+          if (confirm(`Remove "${item.text}"?`)) remove(ref(db, `adventure-list/${id}`));
         });
         ul.appendChild(li);
       });
 
-      // Progress
       const pct = total === 0 ? 0 : Math.round((doneCount / total) * 100);
       document.getElementById("progress-fill").style.width = pct + "%";
       document.getElementById("progress-count").textContent = doneCount + " / " + total;
@@ -110,61 +101,56 @@
         "one left — save the best 🌙",
         "you did everything together 🥂",
       ];
-      const idx = total === 0 ? 0 : Math.min(
-        Math.round((doneCount / total) * (msgs.length - 1)),
-        msgs.length - 1
-      );
+      const idx = total === 0 ? 0 : Math.min(Math.round((doneCount/total)*(msgs.length-1)), msgs.length-1);
       document.getElementById("footer-note").textContent = msgs[idx];
       document.getElementById("loading-msg").style.display = "none";
-      document.getElementById("list-wrap").style.display  = "block";
+      document.getElementById("list-wrap").style.display = "block";
     }
 
-    // ── Add item ──────────────────────────────────────────────────────
-    document.getElementById("add-confirm").addEventListener("click", () => {
+    document.getElementById("add-confirm").addEventListener("click", addItem);
+    document.getElementById("new-text").addEventListener("keydown", e => {
+      if (e.key === "Enter") addItem();
+    });
+
+    function addItem() {
       const text  = document.getElementById("new-text").value.trim();
       const emoji = document.getElementById("selected-emoji").textContent;
       if (!text) { document.getElementById("new-text").focus(); return; }
       push(listRef, { text, emoji, done: false });
       document.getElementById("new-text").value = "";
-      document.getElementById("add-panel").style.display = "none";
-      document.getElementById("add-open-btn").style.display = "flex";
+      closePanel();
       showToast(`"${text}" added! 🌸`);
-    });
+    }
 
-    document.getElementById("new-text").addEventListener("keydown", (e) => {
-      if (e.key === "Enter") document.getElementById("add-confirm").click();
-    });
-
-    // ── Open / close add panel ────────────────────────────────────────
     document.getElementById("add-open-btn").addEventListener("click", () => {
       document.getElementById("add-panel").style.display = "block";
       document.getElementById("add-open-btn").style.display = "none";
-      document.getElementById("new-text").focus();
+      setTimeout(() => document.getElementById("new-text").focus(), 50);
     });
-    document.getElementById("add-cancel").addEventListener("click", () => {
+    document.getElementById("add-cancel").addEventListener("click", closePanel);
+
+    function closePanel() {
       document.getElementById("add-panel").style.display = "none";
       document.getElementById("add-open-btn").style.display = "flex";
       document.getElementById("new-text").value = "";
-    });
+      document.getElementById("emoji-grid").style.display = "none";
+    }
 
-    // ── Emoji picker ──────────────────────────────────────────────────
-    const pickerGrid = document.getElementById("emoji-grid");
+    const grid = document.getElementById("emoji-grid");
     EMOJI_OPTIONS.forEach(e => {
       const btn = document.createElement("button");
       btn.className = "emoji-opt";
       btn.textContent = e;
       btn.addEventListener("click", () => {
         document.getElementById("selected-emoji").textContent = e;
-        pickerGrid.style.display = "none";
+        grid.style.display = "none";
       });
-      pickerGrid.appendChild(btn);
+      grid.appendChild(btn);
     });
-
     document.getElementById("emoji-trigger").addEventListener("click", () => {
-      pickerGrid.style.display = pickerGrid.style.display === "flex" ? "none" : "flex";
+      grid.style.display = grid.style.display === "flex" ? "none" : "flex";
     });
 
-    // ── Toast ──────────────────────────────────────────────────────────
     function showToast(msg) {
       const t = document.getElementById("toast");
       t.textContent = msg;
@@ -176,15 +162,13 @@
       }, 2200);
     }
 
-    // ── Helpers ────────────────────────────────────────────────────────
-    function escHtml(str) {
+    function esc(str) {
       return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
     }
   </script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       background: #FBF6F3;
       font-family: 'DM Sans', sans-serif;
@@ -194,7 +178,6 @@
       justify-content: center;
       padding: 32px 16px 80px;
     }
-
     .card {
       background: #FEFAF7;
       border-radius: 24px;
@@ -205,48 +188,25 @@
       position: relative;
       overflow: hidden;
     }
-    .blob-tr {
-      position: absolute; top:-44px; right:-44px;
-      width:150px; height:150px; border-radius:50%;
-      background:#F5DDD9; opacity:.5; pointer-events:none;
-    }
-    .blob-bl {
-      position: absolute; bottom:-50px; left:-30px;
-      width:130px; height:130px; border-radius:50%;
-      background:#A8B89C; opacity:.15; pointer-events:none;
-    }
-
-    /* Header */
+    .blob-tr { position:absolute; top:-44px; right:-44px; width:150px; height:150px; border-radius:50%; background:#F5DDD9; opacity:.5; pointer-events:none; }
+    .blob-bl { position:absolute; bottom:-50px; left:-30px; width:130px; height:130px; border-radius:50%; background:#A8B89C; opacity:.15; pointer-events:none; }
     .header { text-align:center; margin-bottom:32px; position:relative; }
-    .hearts  { font-size:20px; letter-spacing:6px; margin-bottom:8px; display:block; }
-    h1 {
-      font-family:'Playfair Display',serif; font-size:2rem;
-      font-weight:500; color:#5C3D35; line-height:1.2;
-    }
+    .hearts { font-size:20px; letter-spacing:6px; margin-bottom:8px; display:block; }
+    h1 { font-family:'Playfair Display',serif; font-size:2rem; font-weight:500; color:#5C3D35; line-height:1.2; }
     h1 em { font-style:italic; color:#E8A598; }
-    .subtitle {
-      margin-top:8px; font-size:.78rem; font-weight:300;
-      color:#9B7B74; letter-spacing:.09em; text-transform:uppercase;
-    }
-    .divider {
-      width:40px; height:2px; background:#E8A598; border-radius:2px;
-      margin:16px auto 0; opacity:.65;
-    }
-
-    /* List */
+    .subtitle { margin-top:8px; font-size:.78rem; font-weight:300; color:#9B7B74; letter-spacing:.09em; text-transform:uppercase; }
+    .divider { width:40px; height:2px; background:#E8A598; border-radius:2px; margin:16px auto 0; opacity:.65; }
+    .sync-note { text-align:center; font-size:.72rem; color:#C4A49E; margin-bottom:16px; letter-spacing:.03em; }
     #todo-list { list-style:none; display:flex; flex-direction:column; gap:10px; }
-
     .item {
       display:flex; align-items:center; gap:14px;
       background:#F9F2EE; border-radius:14px; padding:13px 16px;
-      border:1.5px solid transparent;
-      cursor:pointer; position:relative;
+      border:1.5px solid transparent; cursor:pointer; position:relative;
       transition:background .18s, border-color .18s, transform .15s;
     }
     .item:hover { transform:translateX(3px); background:#F5DDD9; border-color:#E8A598; }
     .item.done  { background:#EFF6EC; border-color:#A8B89C; }
     .item:hover .del-btn { opacity:1 !important; }
-
     .check-circle {
       flex-shrink:0; width:22px; height:22px; border-radius:50%;
       border:2px solid #E8A598; background:white;
@@ -255,132 +215,55 @@
       transition:background .2s, border-color .2s;
     }
     .item.done .check-circle { background:#A8B89C; border-color:#A8B89C; }
-
     .item-emoji { font-size:1.25rem; flex-shrink:0; width:26px; text-align:center; }
-
-    .item-text {
-      font-size:.93rem; color:#5C3D35; font-weight:400; flex:1;
-      transition:color .18s, text-decoration .18s;
-    }
+    .item-text { font-size:.93rem; color:#5C3D35; font-weight:400; flex:1; transition:color .18s; }
     .item.done .item-text { text-decoration:line-through; color:#9BB28F; }
-
-    .del-btn {
-      opacity:0; flex-shrink:0; background:none; border:none;
-      cursor:pointer; font-size:.8rem; color:#C4A49E;
-      padding:2px 4px; border-radius:6px;
-      transition:opacity .15s; line-height:1;
-    }
-
-    /* Add panel */
+    .del-btn { opacity:0; flex-shrink:0; background:none; border:none; cursor:pointer; font-size:.8rem; color:#C4A49E; padding:2px 4px; border-radius:6px; transition:opacity .15s; line-height:1; }
     #add-open-btn {
-      display:flex; align-items:center; gap:8px;
-      margin-top:14px; width:100%;
-      background:#F9F2EE; border:1.5px dashed #E8A598;
-      border-radius:14px; padding:13px 18px;
-      cursor:pointer; color:#E8A598;
-      font-size:.88rem; font-family:'DM Sans',sans-serif;
-      font-weight:500; letter-spacing:.03em;
-      transition:background .18s;
+      display:flex; align-items:center; gap:8px; margin-top:14px; width:100%;
+      background:#F9F2EE; border:1.5px dashed #E8A598; border-radius:14px; padding:13px 18px;
+      cursor:pointer; color:#E8A598; font-size:.88rem; font-family:'DM Sans',sans-serif;
+      font-weight:500; letter-spacing:.03em; transition:background .18s;
     }
     #add-open-btn:hover { background:#F5DDD9; }
-
-    #add-panel {
-      display:none; margin-top:14px;
-      background:#F5DDD9; border-radius:14px; padding:16px 18px;
-    }
+    #add-panel { display:none; margin-top:14px; background:#F5DDD9; border-radius:14px; padding:16px 18px; }
     .add-row { display:flex; gap:10px; align-items:center; margin-bottom:10px; }
-
-    #emoji-trigger {
-      font-size:1.4rem; background:white; border:1.5px solid #E8A598;
-      border-radius:10px; width:44px; height:44px; cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
-      flex-shrink:0; transition:background .15s;
-    }
-    #emoji-trigger:hover { background:#FBF6F3; }
-
-    #new-text {
-      flex:1; border:1.5px solid #E8A598; border-radius:10px;
-      padding:10px 14px; font-size:.9rem; font-family:'DM Sans',sans-serif;
-      background:white; color:#5C3D35;
-    }
+    #emoji-trigger { font-size:1.4rem; background:white; border:1.5px solid #E8A598; border-radius:10px; width:44px; height:44px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    #new-text { flex:1; border:1.5px solid #E8A598; border-radius:10px; padding:10px 14px; font-size:.9rem; font-family:'DM Sans',sans-serif; background:white; color:#5C3D35; }
     #new-text:focus { outline:none; border-color:#C4706A; }
-
-    #emoji-grid {
-      display:none; flex-wrap:wrap; gap:6px;
-      background:white; border-radius:10px; padding:10px; margin-bottom:12px;
-    }
-    .emoji-opt {
-      font-size:1.2rem; background:none; border:none; cursor:pointer;
-      width:34px; height:34px; border-radius:8px;
-      display:flex; align-items:center; justify-content:center;
-      transition:background .12s, transform .12s;
-    }
+    #emoji-grid { display:none; flex-wrap:wrap; gap:6px; background:white; border-radius:10px; padding:10px; margin-bottom:12px; }
+    .emoji-opt { font-size:1.2rem; background:none; border:none; cursor:pointer; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; transition:background .12s, transform .12s; }
     .emoji-opt:hover { background:#F5DDD9; transform:scale(1.15); }
-
     .add-actions { display:flex; gap:8px; justify-content:flex-end; }
-    #add-cancel {
-      background:none; border:none; cursor:pointer;
-      font-size:.82rem; color:#9B7B74; padding:8px 14px; border-radius:99px;
-      font-family:'DM Sans',sans-serif;
-    }
-    #add-confirm {
-      background:#E8A598; border:none; cursor:pointer;
-      font-size:.82rem; color:white; font-weight:500;
-      padding:8px 20px; border-radius:99px;
-      font-family:'DM Sans',sans-serif; letter-spacing:.03em;
-      transition:background .15s;
-    }
+    #add-cancel { background:none; border:none; cursor:pointer; font-size:.82rem; color:#9B7B74; padding:8px 14px; border-radius:99px; font-family:'DM Sans',sans-serif; }
+    #add-confirm { background:#E8A598; border:none; cursor:pointer; font-size:.82rem; color:white; font-weight:500; padding:8px 20px; border-radius:99px; font-family:'DM Sans',sans-serif; letter-spacing:.03em; transition:background .15s; }
     #add-confirm:hover { background:#D98F82; }
-
-    /* Progress */
-    .progress-section { margin-top:28px; position:relative; z-index:1; }
-    .progress-label   { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+    .progress-section { margin-top:28px; }
+    .progress-label { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
     .progress-label span { font-size:.76rem; color:#9B7B74; letter-spacing:.04em; }
     #progress-count { font-family:'Playfair Display',serif; font-size:.95rem; color:#5C3D35; font-weight:500; }
-    .progress-bar   { height:6px; background:#F5DDD9; border-radius:99px; overflow:hidden; }
-    #progress-fill  {
-      height:100%; background:linear-gradient(90deg,#E8A598,#A8B89C);
-      border-radius:99px; width:0%;
-      transition:width .5s cubic-bezier(.4,0,.2,1);
-    }
-
+    .progress-bar { height:6px; background:#F5DDD9; border-radius:99px; overflow:hidden; }
+    #progress-fill { height:100%; background:linear-gradient(90deg,#E8A598,#A8B89C); border-radius:99px; width:0%; transition:width .5s cubic-bezier(.4,0,.2,1); }
     #footer-note { text-align:center; margin-top:20px; font-size:.78rem; color:#C4A49E; font-style:italic; }
-
-    /* Loading */
     #loading-msg { text-align:center; padding:40px 0; color:#C4A49E; font-size:.9rem; }
-    #list-wrap   { display:none; }
-
-    /* Toast */
-    #toast {
-      position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(10px);
-      background:#5C3D35; color:#FBF6F3; border-radius:99px; padding:10px 22px;
-      font-size:.82rem; letter-spacing:.03em;
-      box-shadow:0 4px 20px rgba(92,61,53,.25); z-index:999;
-      white-space:nowrap; opacity:0;
-      transition:opacity .3s, transform .3s;
-      pointer-events:none;
-    }
+    #list-wrap { display:none; }
+    #toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(10px); background:#5C3D35; color:#FBF6F3; border-radius:99px; padding:10px 22px; font-size:.82rem; letter-spacing:.03em; box-shadow:0 4px 20px rgba(92,61,53,.25); z-index:999; white-space:nowrap; opacity:0; transition:opacity .3s, transform .3s; pointer-events:none; }
   </style>
 </head>
 <body>
-
 <div class="card">
   <div class="blob-tr"></div>
   <div class="blob-bl"></div>
-
   <div class="header">
     <span class="hearts">♡ ♡ ♡</span>
     <h1>Our Little <em>Adventure</em> List</h1>
     <p class="subtitle">things to try together</p>
     <div class="divider"></div>
   </div>
-
+  <p class="sync-note">🔴 live — changes show up for both of you instantly</p>
   <p id="loading-msg">loading your list… 🌸</p>
-
   <div id="list-wrap">
     <ul id="todo-list"></ul>
-
-    <!-- Add panel -->
     <div id="add-panel">
       <div class="add-row">
         <button id="emoji-trigger"><span id="selected-emoji">🌸</span></button>
@@ -392,81 +275,19 @@
         <button id="add-confirm">add to our list ♡</button>
       </div>
     </div>
-
     <button id="add-open-btn">
       <span style="font-size:1.1rem">+</span> add something new
     </button>
-
     <div class="progress-section">
       <div class="progress-label">
         <span>adventures completed</span>
         <span id="progress-count">0 / 0</span>
       </div>
-      <div class="progress-bar">
-        <div id="progress-fill"></div>
-      </div>
+      <div class="progress-bar"><div id="progress-fill"></div></div>
     </div>
-
     <p id="footer-note">tap anything to get started 💕</p>
   </div>
 </div>
-
 <div id="toast"></div>
-
-<!--
-═══════════════════════════════════════════════════════════════
-  📖 HOW TO SET THIS UP (no coding needed — ~15 minutes)
-═══════════════════════════════════════════════════════════════
-
-PART 1 — CREATE YOUR FREE FIREBASE DATABASE
-────────────────────────────────────────────
-1. Go to https://console.firebase.google.com
-2. Click "Add project" → give it any name (e.g. "our-adventures")
-3. Disable Google Analytics if asked (you don't need it) → click "Create project"
-4. Once inside the project, click "Realtime Database" in the left sidebar
-5. Click "Create Database" → choose any location → start in "Test mode" → click Enable
-6. You now have a live database! Keep this tab open.
-
-PART 2 — GET YOUR CONFIG KEYS
-──────────────────────────────
-7. Click the ⚙️ gear icon (top-left, next to "Project Overview") → "Project settings"
-8. Scroll down to "Your apps" → click the </> (web) icon
-9. Give the app a nickname (anything) → click "Register app"
-10. You'll see a block of code with firebaseConfig — copy ALL the values inside it
-11. Open THIS file (index.html) in any text editor (Notepad on Windows, TextEdit on Mac)
-12. Find the section that says "PASTE_YOUR_..." and replace each value with your own
-    It should look like this when done:
-      apiKey: "AIzaSyAbc123...",
-      authDomain: "our-adventures.firebaseapp.com",
-      databaseURL: "https://our-adventures-default-rtdb.firebaseio.com",
-      ...etc
-13. Save the file.
-
-PART 3 — DEPLOY TO VERCEL (free)
-──────────────────────────────────
-14. Go to https://vercel.com → sign up with GitHub (or just your email)
-15. From your dashboard, look for "Add New" → "Project"
-16. Choose "Deploy without a repository" (or drag & drop)
-17. Drag this index.html file into the upload area
-18. Click Deploy — Vercel gives you a free link like https://your-list.vercel.app
-19. Share that link with her and you're both connected! 🎉
-
-PART 4 — KEEP IT SECURE (optional but recommended)
-────────────────────────────────────────────────────
-Right now the database is in "Test mode" which anyone can read/write.
-To lock it down so only you two can access it:
-- Go back to Firebase → Realtime Database → Rules
-- Replace the rules with:
-  {
-    "rules": {
-      ".read": true,
-      ".write": true
-    }
-  }
-  (This is fine for a private shared list — the URL is your password effectively)
-
-═══════════════════════════════════════════════════════════════
--->
-
 </body>
 </html>
