@@ -94,13 +94,13 @@
     .person-slot.youssef .person-name { color:var(--mocha); }
     .person-slot.shahd   .person-name { color:#4A6B42; }
 
-    .slot-photos { display:grid; grid-template-columns:repeat(auto-fill,minmax(64px,1fr)); gap:4px; padding:6px 6px 0; }
-    .slot-thumb { position:relative; aspect-ratio:1; border-radius:8px; overflow:hidden; transition:transform .2s,box-shadow .2s; }
-    .slot-thumb:hover { transform:scale(1.06); box-shadow:0 3px 10px rgba(92,61,53,.18); }
-    .slot-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
-    .slot-thumb .rm-ph { position:absolute; top:4px; right:4px; background:rgba(92,61,53,.55); color:white; border:none; border-radius:99px; width:20px; height:20px; font-size:.6rem; display:flex; align-items:center; justify-content:center; transition:background .2s, opacity .2s, transform .2s; opacity:0; transform:scale(.8); }
-    .slot-thumb:hover .rm-ph { opacity:1; transform:scale(1); }
-    .slot-thumb .rm-ph:hover { background:rgba(160,60,50,.9); transform:scale(1.15); }
+    .slot-photos { display:flex; flex-wrap:wrap; gap:8px; padding:8px 6px 0; }
+    .slot-thumb { display:flex; flex-direction:column; align-items:center; gap:5px; flex-shrink:0; }
+    .slot-thumb-img { width:64px; height:64px; border-radius:8px; overflow:hidden; transition:transform .2s,box-shadow .2s; }
+    .slot-thumb:hover .slot-thumb-img { transform:scale(1.05); box-shadow:0 3px 10px rgba(92,61,53,.18); }
+    .slot-thumb-img img { width:100%; height:100%; object-fit:cover; display:block; }
+    .rm-ph { background:none; border:1.5px solid #D4B5B0; border-radius:8px; padding:3px 8px; color:#9B7B74; font-size:.62rem; display:flex; align-items:center; gap:3px; font-family:'DM Sans',sans-serif; transition:background .15s,color .15s,border-color .15s,transform .15s; white-space:nowrap; }
+    .rm-ph:hover { background:#FDE8E8; color:#c0392b; border-color:#e0a0a0; transform:scale(1.05); }
 
     .slot-upload { margin:6px 6px 6px; border:1.5px dashed; border-radius:10px; padding:10px 6px; text-align:center; position:relative; transition:background .18s; }
     .person-slot.youssef .slot-upload { border-color:var(--rose); }
@@ -314,7 +314,7 @@
     @media (max-width: 600px) {
       #cursor, #cursor-trail { display: none; }
       * { cursor: auto !important; }
-      .slot-thumb .rm-ph { opacity: 1 !important; transform: scale(1) !important; }
+      /* bin button always visible on mobile - no change needed since it's not overlaid */
       .page { padding: 16px 10px 80px; }
       .card { padding: 28px 18px 32px; border-radius: 18px; }
       .card:hover { transform: none; box-shadow: 0 8px 40px rgba(92,61,53,.10); }
@@ -547,7 +547,7 @@
       const ypg=li.querySelector(`#yp-${id}`);
       youPhotos.forEach(([pid,pd])=>{
         const t=document.createElement("div");t.className="slot-thumb";
-        t.innerHTML=`<img src="${pd.url}"/><button class="rm-ph">✕</button>`;
+        t.innerHTML=`<div class="slot-thumb-img"><img src="${pd.url}"/></div><button class="rm-ph">🗑 remove</button>`;
         t.querySelector("img").addEventListener("click",()=>openLightbox(pd.url));
         t.querySelector(".rm-ph").addEventListener("click",e=>{e.stopPropagation();remove(ref(db,`adventure-list/${id}/photos/youssef/${pid}`));showToast("photo removed");});
         ypg.appendChild(t);
@@ -556,7 +556,7 @@
       const spg=li.querySelector(`#sp-${id}`);
       shahdPhotos.forEach(([pid,pd])=>{
         const t=document.createElement("div");t.className="slot-thumb";
-        t.innerHTML=`<img src="${pd.url}"/><button class="rm-ph">✕</button>`;
+        t.innerHTML=`<div class="slot-thumb-img"><img src="${pd.url}"/></div><button class="rm-ph">🗑 remove</button>`;
         t.querySelector("img").addEventListener("click",()=>openLightbox(pd.url));
         t.querySelector(".rm-ph").addEventListener("click",e=>{e.stopPropagation();remove(ref(db,`adventure-list/${id}/photos/shahd/${pid}`));showToast("photo removed");});
         spg.appendChild(t);
