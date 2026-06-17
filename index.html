@@ -10,78 +10,31 @@
     :root {
       --rose: #E8A598; --blush: #F5DDD9; --sand: #F9F2EE;
       --mocha: #5C3D35; --sage: #A8B89C; --cream: #FEFAF7; --bg: #FBF6F3;
+      --y-color: #E8A598; --s-color: #A8B89C;
     }
-
-    /* ── Custom cursor ── */
     * { cursor: none !important; }
-    #cursor {
-      position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: transform 0.08s ease;
-    }
-    #cursor svg { display: block; }
-    #cursor-trail {
-      position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998;
-      transform: translate(-50%, -50%);
-      transition: left 0.18s ease, top 0.18s ease;
-    }
-    #cursor-trail svg { display: block; opacity: 0.35; }
-
-    body { background: var(--bg); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
-
-    /* ── Floating hearts background ── */
-    #float-hearts { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-    .fh {
-      position: absolute; bottom: -60px; font-size: 1.1rem; opacity: 0;
-      animation: floatUp linear infinite;
-    }
-    @keyframes floatUp {
-      0%   { opacity: 0; transform: translateY(0) scale(0.7) rotate(-10deg); }
-      15%  { opacity: 0.35; }
-      85%  { opacity: 0.2; }
-      100% { opacity: 0; transform: translateY(-110vh) scale(1.1) rotate(15deg); }
-    }
-
-    /* ── PAGES ── */
-    .page { display: none; min-height: 100vh; padding: 32px 16px 80px; justify-content: flex-start; align-items: flex-start; }
-    .page.active { display: flex; flex-direction: column; align-items: center; }
-
-    /* ── NAV ── */
-    .nav {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background: var(--cream); border-top: 1px solid var(--blush);
-      display: flex; z-index: 100;
-      box-shadow: 0 -4px 20px rgba(92,61,53,.08);
-    }
-    .nav-btn {
-      flex: 1; padding: 12px 8px; background: none; border: none;
-      font-family: 'DM Sans', sans-serif; font-size: .78rem; color: #9B7B74;
-      display: flex; flex-direction: column; align-items: center; gap: 3px;
-      transition: color .2s, transform .2s;
-    }
-    .nav-btn:hover { color: var(--rose); transform: translateY(-2px); }
-    .nav-btn.active { color: var(--rose); }
-    .nav-btn .nav-icon { font-size: 1.3rem; }
-
-    /* ── CARD ── */
-    .card {
-      background: var(--cream); border-radius: 24px; max-width: 500px; width: 100%;
-      padding: 44px 36px 48px;
-      box-shadow: 0 8px 40px rgba(92,61,53,.10), 0 2px 8px rgba(92,61,53,.06);
-      position: relative; overflow: hidden; z-index: 1;
-      animation: cardIn 0.6s cubic-bezier(.22,1,.36,1) both;
-      transition: box-shadow .3s, transform .3s;
-    }
-    .card:hover { box-shadow: 0 16px 56px rgba(92,61,53,.15), 0 4px 16px rgba(92,61,53,.08); transform: translateY(-2px); }
+    #cursor { position:fixed; top:0; left:0; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform .08s ease; }
+    #cursor-trail { position:fixed; top:0; left:0; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:left .16s ease,top .16s ease; }
+    #cursor-trail svg { opacity:.3; }
+    body { background:var(--bg); font-family:'DM Sans',sans-serif; min-height:100vh; overflow-x:hidden; }
+    #float-hearts { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+    .fh { position:absolute; bottom:-60px; opacity:0; animation:floatUp linear infinite; }
+    @keyframes floatUp { 0%{opacity:0;transform:translateY(0) scale(.7) rotate(-10deg)} 15%{opacity:.3} 85%{opacity:.15} 100%{opacity:0;transform:translateY(-110vh) scale(1.1) rotate(15deg)} }
+    .page { display:none; min-height:100vh; padding:32px 16px 90px; flex-direction:column; align-items:center; }
+    .page.active { display:flex; }
+    .nav { position:fixed; bottom:0; left:0; right:0; background:var(--cream); border-top:1px solid var(--blush); display:flex; z-index:100; box-shadow:0 -4px 20px rgba(92,61,53,.08); }
+    .nav-btn { flex:1; padding:12px 8px; background:none; border:none; font-family:'DM Sans',sans-serif; font-size:.78rem; color:#9B7B74; display:flex; flex-direction:column; align-items:center; gap:3px; transition:color .2s,transform .2s; }
+    .nav-btn:hover { color:var(--rose); transform:translateY(-2px); }
+    .nav-btn.active { color:var(--rose); }
+    .nav-icon { font-size:1.3rem; }
+    .card { background:var(--cream); border-radius:24px; max-width:520px; width:100%; padding:44px 36px 48px; box-shadow:0 8px 40px rgba(92,61,53,.10),0 2px 8px rgba(92,61,53,.06); position:relative; overflow:hidden; z-index:1; animation:cardIn .6s cubic-bezier(.22,1,.36,1) both; transition:box-shadow .3s,transform .3s; }
+    .card:hover { box-shadow:0 16px 56px rgba(92,61,53,.15); transform:translateY(-2px); }
     @keyframes cardIn { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-
     .blob-tr { position:absolute; top:-44px; right:-44px; width:160px; height:160px; border-radius:50%; background:var(--blush); opacity:.5; pointer-events:none; animation:blob 7s ease-in-out infinite; }
     .blob-bl { position:absolute; bottom:-50px; left:-30px; width:140px; height:140px; border-radius:50%; background:var(--sage); opacity:.15; pointer-events:none; animation:blob 9s ease-in-out infinite reverse; }
     @keyframes blob { 0%,100%{transform:scale(1)} 50%{transform:scale(1.09)} }
-
-    /* ── HEADER ── */
-    .header { text-align:center; margin-bottom:26px; position:relative; }
-    .hearts { font-size:20px; letter-spacing:6px; margin-bottom:8px; display:block; animation: hb 2.2s ease-in-out infinite; }
+    .header { text-align:center; margin-bottom:26px; }
+    .hearts { font-size:20px; letter-spacing:6px; margin-bottom:8px; display:block; animation:hb 2.2s ease-in-out infinite; }
     @keyframes hb { 0%,100%{transform:scale(1)} 15%{transform:scale(1.18)} 30%{transform:scale(1)} 45%{transform:scale(1.08)} }
     h1 { font-family:'Playfair Display',serif; font-size:2rem; font-weight:500; color:var(--mocha); line-height:1.2; }
     h1 em { font-style:italic; color:var(--rose); }
@@ -89,117 +42,89 @@
     .divider { width:40px; height:2px; background:var(--rose); border-radius:2px; margin:14px auto 0; opacity:.65; }
     .sync-note { text-align:center; font-size:.72rem; color:#C4A49E; margin-bottom:16px; }
 
-    /* ── LIST ── */
-    #todo-list { list-style:none; display:flex; flex-direction:column; gap:10px; }
-    .item {
-      background:var(--sand); border-radius:16px; border:1.5px solid transparent;
-      overflow:hidden; transition:border-color .22s, box-shadow .22s, transform .22s;
-      animation:itemIn .4s cubic-bezier(.22,1,.36,1) both;
-    }
-    .item:hover {
-      border-color: var(--rose);
-      box-shadow: 0 6px 20px rgba(232,165,152,.22);
-      transform: translateX(5px) scale(1.012);
-    }
+    /* ── LIST ITEMS ── */
+    #todo-list { list-style:none; display:flex; flex-direction:column; gap:12px; }
+    .item { background:var(--sand); border-radius:18px; border:1.5px solid transparent; overflow:hidden; transition:border-color .22s,box-shadow .22s,transform .22s; animation:itemIn .4s cubic-bezier(.22,1,.36,1) both; }
+    .item:hover { border-color:var(--rose); box-shadow:0 6px 22px rgba(232,165,152,.2); transform:translateX(4px) scale(1.01); }
     .item.done { background:#EFF6EC; border-color:var(--sage); }
-    .item.done:hover { border-color: var(--sage); transform: translateX(5px) scale(1.012); box-shadow: 0 6px 20px rgba(168,184,156,.2); }
+    .item.done:hover { border-color:var(--sage); }
     @keyframes itemIn { from{opacity:0;transform:translateX(-12px)} to{opacity:1;transform:translateX(0)} }
-
-    .item-row { display:flex; align-items:center; gap:12px; padding:13px 14px; }
-
-    .check-circle {
-      flex-shrink:0; width:24px; height:24px; border-radius:50%;
-      border:2px solid var(--rose); background:white;
-      display:flex; align-items:center; justify-content:center;
-      font-size:12px; color:white; font-weight:700;
-      transition:background .22s, border-color .22s, transform .2s, box-shadow .2s;
-    }
+    .item-row { display:flex; align-items:center; gap:12px; padding:14px 14px 14px 16px; }
+    .check-circle { flex-shrink:0; width:24px; height:24px; border-radius:50%; border:2px solid var(--rose); background:white; display:flex; align-items:center; justify-content:center; font-size:12px; color:white; font-weight:700; transition:background .22s,border-color .22s,transform .2s,box-shadow .2s; }
     .check-circle:hover { transform:scale(1.2); box-shadow:0 0 0 4px rgba(232,165,152,.25); }
     .item.done .check-circle { background:var(--sage); border-color:var(--sage); }
-
     .item-emoji { font-size:1.25rem; flex-shrink:0; width:26px; text-align:center; transition:transform .2s; }
-    .item-emoji:hover { transform: scale(1.35) rotate(10deg); }
-
-    .item-text {
-      font-size:.93rem; color:var(--mocha); font-weight:400; flex:1;
-      border:none; background:transparent; font-family:'DM Sans',sans-serif;
-      padding:2px 6px; border-radius:6px; outline:none;
-      transition:background .15s, box-shadow .15s, color .2s;
-    }
+    .item-emoji:hover { transform:scale(1.35) rotate(10deg); }
+    .item-text { font-size:.93rem; color:var(--mocha); font-weight:400; flex:1; border:none; background:transparent; font-family:'DM Sans',sans-serif; padding:2px 6px; border-radius:6px; outline:none; transition:background .15s,box-shadow .15s; }
     .item-text:focus { background:white; box-shadow:0 0 0 2px var(--rose); }
     .item.done .item-text { text-decoration:line-through; color:#9BB28F; }
-
-    .item-actions { display:flex; gap:5px; align-items:center; flex-shrink:0; }
-    .photo-btn {
-      background:none; border:1.5px solid var(--rose); border-radius:8px;
-      padding:4px 7px; font-size:.7rem; color:var(--rose);
-      font-family:'DM Sans',sans-serif; font-weight:500;
-      transition:background .15s, color .15s, transform .15s; white-space:nowrap;
-    }
-    .photo-btn:hover { background:var(--rose); color:white; transform:scale(1.08); }
-    .photo-btn.has-photo { background:var(--rose); color:white; }
-    .del-btn {
-      background:none; border:none; font-size:.78rem;
-      color:#C4A49E; padding:4px 5px; border-radius:6px;
-      transition:color .15s, transform .2s; line-height:1;
-    }
+    .item-right { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+    .expand-btn { background:none; border:1.5px solid var(--rose); border-radius:8px; padding:4px 9px; font-size:.72rem; color:var(--rose); font-family:'DM Sans',sans-serif; font-weight:500; transition:background .15s,color .15s,transform .15s; white-space:nowrap; }
+    .expand-btn:hover { background:var(--rose); color:white; transform:scale(1.07); }
+    .expand-btn.open { background:var(--rose); color:white; }
+    .del-btn { background:none; border:none; font-size:.78rem; color:#C4A49E; padding:4px 5px; border-radius:6px; transition:color .15s,transform .2s; line-height:1; }
     .del-btn:hover { color:#a0635a; transform:scale(1.25) rotate(90deg); }
 
-    /* Photo section */
-    .photo-section { display:none; padding:0 14px 14px; animation:slideDown .22s ease; }
-    .photo-section.open { display:block; }
+    /* ── DROPDOWN PANEL ── */
+    .dropdown { display:none; border-top:1px solid var(--blush); animation:slideDown .25s ease; }
+    .dropdown.open { display:block; }
     @keyframes slideDown { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
-    .photo-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(90px,1fr)); gap:8px; margin-bottom:10px; }
-    .photo-thumb { position:relative; border-radius:10px; overflow:hidden; aspect-ratio:1; transition:transform .2s, box-shadow .2s; }
-    .photo-thumb:hover { transform:scale(1.05); box-shadow:0 4px 14px rgba(92,61,53,.18); }
-    .photo-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
-    .photo-thumb .rm-ph { position:absolute; top:4px; right:4px; background:rgba(92,61,53,.75); color:white; border:none; border-radius:99px; width:20px; height:20px; font-size:.65rem; display:flex; align-items:center; justify-content:center; transition:background .15s; }
-    .photo-thumb .rm-ph:hover { background:rgba(92,61,53,1); }
-    .upload-area {
-      border:2px dashed var(--rose); border-radius:12px; padding:16px;
-      text-align:center; background:white; position:relative;
-      transition:background .18s, transform .18s;
-    }
-    .upload-area:hover { background:var(--blush); transform:scale(1.01); }
-    .upload-area input { position:absolute; inset:0; opacity:0; width:100%; height:100%; }
-    .upload-area .u-icon { font-size:1.4rem; display:block; margin-bottom:4px; }
-    .upload-area .u-hint { font-size:.77rem; color:#9B7B74; }
+
+    /* Notes section */
+    .notes-section { padding:14px 16px 10px; }
+    .notes-label { font-size:.72rem; color:#9B7B74; text-transform:uppercase; letter-spacing:.07em; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+    .notes-label span { font-size:.9rem; }
+    .notes-input { width:100%; border:1.5px solid var(--blush); border-radius:10px; padding:10px 12px; font-size:.85rem; font-family:'DM Sans',sans-serif; color:var(--mocha); background:white; resize:none; min-height:70px; transition:border-color .18s,box-shadow .18s; }
+    .notes-input:focus { outline:none; border-color:var(--rose); box-shadow:0 0 0 3px rgba(232,165,152,.15); }
+    .notes-save { margin-top:6px; float:right; background:var(--rose); border:none; color:white; font-size:.75rem; font-family:'DM Sans',sans-serif; font-weight:500; padding:5px 14px; border-radius:99px; transition:background .15s,transform .15s; }
+    .notes-save:hover { background:#D98F82; transform:translateY(-1px); }
+
+    /* Photos section */
+    .photos-section { padding:6px 16px 14px; }
+    .photos-label { font-size:.72rem; color:#9B7B74; text-transform:uppercase; letter-spacing:.07em; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+    .photos-label span { font-size:.9rem; }
+    .person-uploads { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+    /* Per-person upload slot */
+    .person-slot { border-radius:14px; overflow:hidden; }
+    .person-slot-header { display:flex; align-items:center; justify-content:space-between; padding:7px 10px; font-size:.75rem; font-weight:500; }
+    .person-slot.youssef .person-slot-header { background:rgba(232,165,152,.18); color:#9B4F40; }
+    .person-slot.shahd   .person-slot-header { background:rgba(168,184,156,.18); color:#4A6B42; }
+    .person-name { font-weight:600; letter-spacing:.03em; }
+    .person-slot.youssef .person-name { color:var(--mocha); }
+    .person-slot.shahd   .person-name { color:#4A6B42; }
+
+    .slot-photos { display:grid; grid-template-columns:repeat(auto-fill,minmax(64px,1fr)); gap:4px; padding:6px 6px 0; }
+    .slot-thumb { position:relative; aspect-ratio:1; border-radius:8px; overflow:hidden; transition:transform .2s,box-shadow .2s; }
+    .slot-thumb:hover { transform:scale(1.06); box-shadow:0 3px 10px rgba(92,61,53,.18); }
+    .slot-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+    .slot-thumb .rm-ph { position:absolute; top:3px; right:3px; background:rgba(92,61,53,.75); color:white; border:none; border-radius:99px; width:16px; height:16px; font-size:.55rem; display:flex; align-items:center; justify-content:center; transition:background .15s; }
+
+    .slot-upload { margin:6px 6px 6px; border:1.5px dashed; border-radius:10px; padding:10px 6px; text-align:center; position:relative; transition:background .18s; }
+    .person-slot.youssef .slot-upload { border-color:var(--rose); }
+    .person-slot.shahd   .slot-upload { border-color:var(--sage); }
+    .person-slot.youssef .slot-upload:hover { background:rgba(232,165,152,.1); }
+    .person-slot.shahd   .slot-upload:hover { background:rgba(168,184,156,.1); }
+    .slot-upload input { position:absolute; inset:0; opacity:0; width:100%; height:100%; }
+    .slot-upload .s-icon { font-size:1.1rem; display:block; margin-bottom:2px; }
+    .slot-upload .s-hint { font-size:.65rem; color:#9B7B74; }
 
     /* Add panel */
-    #add-open-btn {
-      display:flex; align-items:center; gap:8px; margin-top:14px; width:100%;
-      background:var(--sand); border:1.5px dashed var(--rose); border-radius:14px;
-      padding:13px 18px; color:var(--rose); font-size:.88rem;
-      font-family:'DM Sans',sans-serif; font-weight:500;
-      transition:background .18s, transform .2s, box-shadow .2s;
-    }
+    #add-open-btn { display:flex; align-items:center; gap:8px; margin-top:14px; width:100%; background:var(--sand); border:1.5px dashed var(--rose); border-radius:14px; padding:13px 18px; color:var(--rose); font-size:.88rem; font-family:'DM Sans',sans-serif; font-weight:500; transition:background .18s,transform .2s,box-shadow .2s; }
     #add-open-btn:hover { background:var(--blush); transform:translateY(-2px); box-shadow:0 4px 14px rgba(232,165,152,.2); }
     #add-panel { display:none; margin-top:14px; background:var(--blush); border-radius:14px; padding:16px 18px; animation:slideDown .2s ease; }
     .add-row { display:flex; gap:10px; align-items:center; margin-bottom:10px; }
-    #emoji-trigger {
-      font-size:1.4rem; background:white; border:1.5px solid var(--rose);
-      border-radius:10px; width:44px; height:44px;
-      display:flex; align-items:center; justify-content:center; flex-shrink:0;
-      transition:transform .2s, box-shadow .2s;
-    }
+    #emoji-trigger { font-size:1.4rem; background:white; border:1.5px solid var(--rose); border-radius:10px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:transform .2s,box-shadow .2s; }
     #emoji-trigger:hover { transform:scale(1.12) rotate(8deg); box-shadow:0 4px 12px rgba(232,165,152,.3); }
-    #new-text {
-      flex:1; border:1.5px solid var(--rose); border-radius:10px;
-      padding:10px 14px; font-size:.9rem; font-family:'DM Sans',sans-serif;
-      background:white; color:var(--mocha); transition:border-color .18s, box-shadow .18s;
-    }
+    #new-text { flex:1; border:1.5px solid var(--rose); border-radius:10px; padding:10px 14px; font-size:.9rem; font-family:'DM Sans',sans-serif; background:white; color:var(--mocha); transition:border-color .18s,box-shadow .18s; }
     #new-text:focus { outline:none; border-color:#C4706A; box-shadow:0 0 0 3px rgba(232,165,152,.2); }
     #emoji-grid { display:none; flex-wrap:wrap; gap:6px; background:white; border-radius:10px; padding:10px; margin-bottom:12px; }
-    .emoji-opt { font-size:1.2rem; background:none; border:none; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; transition:background .12s, transform .15s; }
+    .emoji-opt { font-size:1.2rem; background:none; border:none; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; transition:background .12s,transform .15s; }
     .emoji-opt:hover { background:var(--blush); transform:scale(1.25) rotate(5deg); }
     .add-actions { display:flex; gap:8px; justify-content:flex-end; }
-    #add-cancel { background:none; border:none; font-size:.82rem; color:#9B7B74; padding:8px 14px; border-radius:99px; font-family:'DM Sans',sans-serif; transition:color .15s, transform .15s; }
+    #add-cancel { background:none; border:none; font-size:.82rem; color:#9B7B74; padding:8px 14px; border-radius:99px; font-family:'DM Sans',sans-serif; transition:color .15s,transform .15s; }
     #add-cancel:hover { color:var(--mocha); transform:scale(1.05); }
-    #add-confirm {
-      background:var(--rose); border:none; font-size:.82rem; color:white; font-weight:500;
-      padding:8px 20px; border-radius:99px; font-family:'DM Sans',sans-serif;
-      transition:background .15s, transform .2s, box-shadow .2s;
-    }
+    #add-confirm { background:var(--rose); border:none; font-size:.82rem; color:white; font-weight:500; padding:8px 20px; border-radius:99px; font-family:'DM Sans',sans-serif; transition:background .15s,transform .2s,box-shadow .2s; }
     #add-confirm:hover { background:#D98F82; transform:translateY(-2px); box-shadow:0 4px 14px rgba(232,165,152,.35); }
 
     /* Progress */
@@ -213,73 +138,96 @@
     #loading-msg { text-align:center; padding:40px 0; color:#C4A49E; font-size:.9rem; }
     #list-wrap { display:none; }
 
-    /* ── ALBUM ── */
-    .album-wrap { max-width:560px; width:100%; z-index:1; }
-    .album-header { text-align:center; margin-bottom:28px; }
-    .album-header h2 { font-family:'Playfair Display',serif; font-size:1.8rem; color:var(--mocha); }
+    /* ════ ALBUM PAGE ════ */
+    .album-wrap { max-width:580px; width:100%; z-index:1; }
+    .album-header { text-align:center; margin-bottom:32px; }
+    .album-header h2 { font-family:'Playfair Display',serif; font-size:1.9rem; color:var(--mocha); }
     .album-header h2 em { font-style:italic; color:var(--rose); }
     .album-header p { font-size:.78rem; color:#9B7B74; margin-top:6px; letter-spacing:.07em; text-transform:uppercase; }
     .album-empty { text-align:center; padding:60px 20px; color:#C4A49E; font-size:.9rem; font-style:italic; }
-    .album-item {
-      background:var(--cream); border-radius:20px; margin-bottom:20px; overflow:hidden;
-      box-shadow:0 4px 20px rgba(92,61,53,.08);
-      animation:cardIn .4s cubic-bezier(.22,1,.36,1) both;
-      transition:transform .25s, box-shadow .25s;
-    }
-    .album-item:hover { transform:translateY(-3px); box-shadow:0 10px 32px rgba(92,61,53,.13); }
-    .album-item-header { display:flex; align-items:center; gap:10px; padding:16px 18px 12px; }
-    .album-item-emoji { font-size:1.4rem; transition:transform .2s; }
-    .album-item:hover .album-item-emoji { transform:scale(1.2) rotate(8deg); }
-    .album-item-title { font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--mocha); flex:1; }
-    .album-item-badge { background:var(--sage); color:white; border-radius:99px; padding:3px 10px; font-size:.7rem; font-weight:500; }
-    .album-photo-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:2px; }
-    .album-photo { position:relative; aspect-ratio:1; overflow:hidden; }
-    .album-photo img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .35s; }
-    .album-photo:hover img { transform:scale(1.08); }
-    .album-photo::after { content:'🔍'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:1.4rem; opacity:0; background:rgba(92,61,53,.25); transition:opacity .25s; }
-    .album-photo:hover::after { opacity:1; }
+
+    /* Album memory card */
+    .mem-card { background:var(--cream); border-radius:22px; margin-bottom:28px; overflow:hidden; box-shadow:0 6px 28px rgba(92,61,53,.09); animation:cardIn .4s cubic-bezier(.22,1,.36,1) both; transition:transform .28s,box-shadow .28s; }
+    .mem-card:hover { transform:translateY(-4px); box-shadow:0 14px 40px rgba(92,61,53,.14); }
+
+    .mem-card-header { padding:18px 20px 14px; display:flex; align-items:flex-start; gap:12px; border-bottom:1px solid var(--blush); }
+    .mem-emoji { font-size:2rem; flex-shrink:0; transition:transform .25s; }
+    .mem-card:hover .mem-emoji { transform:scale(1.15) rotate(6deg); }
+    .mem-info { flex:1; }
+    .mem-title { font-family:'Playfair Display',serif; font-size:1.15rem; color:var(--mocha); font-weight:500; }
+    .mem-meta { display:flex; gap:8px; margin-top:5px; flex-wrap:wrap; }
+    .mem-badge { border-radius:99px; padding:3px 10px; font-size:.68rem; font-weight:500; }
+    .mem-badge.done-badge { background:#EFF6EC; color:#4A6B42; }
+    .mem-badge.photo-badge { background:rgba(232,165,152,.2); color:#9B4F40; }
+    .mem-badge.note-badge { background:rgba(168,184,156,.18); color:#4A6B42; }
+    .mem-date { font-size:.7rem; color:#C4A49E; margin-top:4px; }
+
+    /* Notes in album */
+    .mem-notes { padding:14px 20px; background:rgba(249,242,238,.6); border-bottom:1px solid var(--blush); }
+    .mem-notes-label { font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:#9B7B74; margin-bottom:6px; }
+    .mem-notes-text { font-size:.88rem; color:var(--mocha); line-height:1.6; white-space:pre-wrap; font-style:italic; }
+
+    /* Photo layout — beautiful masonry-style grid */
+    .mem-photos { padding:14px 16px 16px; }
+    .mem-photos-label { font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:#9B7B74; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; }
+    .mem-photos-label .photo-count { font-style:normal; color:var(--rose); font-weight:500; }
+
+    /* Person sections in album */
+    .mem-person-section { margin-bottom:14px; }
+    .mem-person-header { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+    .mem-person-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+    .mem-person-dot.y { background:var(--rose); }
+    .mem-person-dot.s { background:var(--sage); }
+    .mem-person-name { font-size:.78rem; font-weight:600; color:var(--mocha); }
+    .mem-person-count { font-size:.7rem; color:#9B7B74; margin-left:auto; }
+
+    /* Photo grid layouts */
+    .photo-layout { display:grid; gap:4px; border-radius:12px; overflow:hidden; }
+    .photo-layout.one   { grid-template-columns:1fr; }
+    .photo-layout.two   { grid-template-columns:1fr 1fr; }
+    .photo-layout.three { grid-template-columns:2fr 1fr; grid-template-rows:1fr 1fr; }
+    .photo-layout.three .pl-ph:first-child { grid-row:1/3; }
+    .photo-layout.four  { grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; }
+    .photo-layout.many  { grid-template-columns:repeat(3,1fr); }
+
+    .pl-ph { position:relative; overflow:hidden; aspect-ratio:1; }
+    .photo-layout.one .pl-ph { aspect-ratio:16/9; max-height:260px; }
+    .photo-layout.two .pl-ph { aspect-ratio:1; }
+    .photo-layout.three .pl-ph:first-child { aspect-ratio:auto; }
+
+    .pl-ph img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .35s; }
+    .pl-ph:hover img { transform:scale(1.07); }
+    .pl-ph::after { content:'🔍'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:1.3rem; opacity:0; background:rgba(92,61,53,.22); transition:opacity .25s; }
+    .pl-ph:hover::after { opacity:1; }
+    .pl-ph .more-overlay { position:absolute; inset:0; background:rgba(92,61,53,.55); display:flex; align-items:center; justify-content:center; color:white; font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:500; }
 
     /* Lightbox */
-    #lightbox { position:fixed; inset:0; background:rgba(0,0,0,.9); z-index:200; display:none; align-items:center; justify-content:center; padding:20px; animation:fadeIn .2s ease; }
+    #lightbox { position:fixed; inset:0; background:rgba(0,0,0,.92); z-index:200; display:none; align-items:center; justify-content:center; padding:20px; animation:fadeIn .2s ease; }
     #lightbox.open { display:flex; }
     @keyframes fadeIn { from{opacity:0} to{opacity:1} }
     #lightbox img { max-width:100%; max-height:90vh; border-radius:14px; object-fit:contain; animation:zoomIn .25s cubic-bezier(.22,1,.36,1); }
     @keyframes zoomIn { from{opacity:0;transform:scale(.88)} to{opacity:1;transform:scale(1)} }
-    #lightbox-close { position:fixed; top:20px; right:20px; background:rgba(255,255,255,.15); border:none; color:white; font-size:1.4rem; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:background .15s, transform .2s; }
+    #lightbox-close { position:fixed; top:20px; right:20px; background:rgba(255,255,255,.15); border:none; color:white; font-size:1.4rem; width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:background .15s,transform .2s; }
     #lightbox-close:hover { background:rgba(255,255,255,.3); transform:scale(1.1) rotate(90deg); }
 
-    /* Sparkle on click */
+    /* Sparkle */
     .sparkle { position:fixed; pointer-events:none; z-index:9997; font-size:1rem; animation:sparklePop .6s ease forwards; }
-    @keyframes sparklePop { 0%{opacity:1;transform:translate(-50%,-50%) scale(0)} 50%{opacity:1;transform:translate(-50%,-50%) scale(1.4)} 100%{opacity:0;transform:translate(-50%,-120%) scale(0.8)} }
+    @keyframes sparklePop { 0%{opacity:1;transform:translate(-50%,-50%) scale(0)} 50%{opacity:1;transform:translate(-50%,-50%) scale(1.5)} 100%{opacity:0;transform:translate(-50%,-130%) scale(.8)} }
 
     /* Toast */
     #toast { position:fixed; bottom:70px; left:50%; transform:translateX(-50%) translateY(16px); background:var(--mocha); color:#FBF6F3; border-radius:99px; padding:10px 22px; font-size:.82rem; box-shadow:0 4px 20px rgba(92,61,53,.3); z-index:999; white-space:nowrap; opacity:0; transition:opacity .3s,transform .3s; pointer-events:none; }
-
-    /* Confetti */
     #confetti-canvas { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:998; }
   </style>
 </head>
 <body>
 
-<!-- Custom cursors -->
-<div id="cursor">
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-    <path d="M14 4C14 4 6 9.5 6 15.5C6 19.642 9.686 23 14 23C18.314 23 22 19.642 22 15.5C22 9.5 14 4 14 4Z" fill="#E8A598"/>
-    <path d="M14 6.5C14 6.5 8 11.2 8 15.5C8 18.538 10.686 21 14 21C17.314 21 20 18.538 20 15.5C20 11.2 14 6.5 14 6.5Z" fill="#F5DDD9"/>
-  </svg>
-</div>
-<div id="cursor-trail">
-  <svg width="18" height="18" viewBox="0 0 28 28" fill="none">
-    <path d="M14 4C14 4 6 9.5 6 15.5C6 19.642 9.686 23 14 23C18.314 23 22 19.642 22 15.5C22 9.5 14 4 14 4Z" fill="#E8A598"/>
-  </svg>
-</div>
+<div id="cursor"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 4C14 4 6 9.5 6 15.5C6 19.642 9.686 23 14 23C18.314 23 22 19.642 22 15.5C22 9.5 14 4 14 4Z" fill="#E8A598"/><path d="M14 6.5C14 6.5 8 11.2 8 15.5C8 18.538 10.686 21 14 21C17.314 21 20 18.538 20 15.5C20 11.2 14 6.5 14 6.5Z" fill="#F5DDD9"/></svg></div>
+<div id="cursor-trail"><svg width="16" height="16" viewBox="0 0 28 28" fill="none"><path d="M14 4C14 4 6 9.5 6 15.5C6 19.642 9.686 23 14 23C18.314 23 22 19.642 22 15.5C22 9.5 14 4 14 4Z" fill="#E8A598"/></svg></div>
 
 <canvas id="confetti-canvas"></canvas>
-
-<!-- Floating hearts -->
 <div id="float-hearts"></div>
 
-<!-- ══ PAGE 1: LIST ══ -->
+<!-- ══ LIST PAGE ══ -->
 <div class="page active" id="page-list">
   <div class="card">
     <div class="blob-tr"></div><div class="blob-bl"></div>
@@ -306,10 +254,7 @@
       </div>
       <button id="add-open-btn"><span style="font-size:1.1rem">+</span> add something new</button>
       <div class="progress-section">
-        <div class="progress-label">
-          <span>adventures completed</span>
-          <span id="progress-count">0 / 0</span>
-        </div>
+        <div class="progress-label"><span>adventures completed</span><span id="progress-count">0 / 0</span></div>
         <div class="progress-bar"><div id="progress-fill"></div></div>
       </div>
       <p id="footer-note">tap anything to get started 💕</p>
@@ -317,7 +262,7 @@
   </div>
 </div>
 
-<!-- ══ PAGE 2: ALBUM ══ -->
+<!-- ══ ALBUM PAGE ══ -->
 <div class="page" id="page-album">
   <div class="album-wrap">
     <div class="album-header">
@@ -326,43 +271,30 @@
       <p>every adventure, captured</p>
       <div class="divider"></div>
     </div>
-    <div id="album-content">
-      <div class="album-empty">no memories yet — go make some! 🌸</div>
-    </div>
+    <div id="album-content"><div class="album-empty">no memories yet — go make some! 🌸</div></div>
   </div>
 </div>
 
-<!-- NAV -->
 <nav class="nav">
-  <button class="nav-btn active" id="nav-list" onclick="showPage('list')">
-    <span class="nav-icon">✨</span>our list
-  </button>
-  <button class="nav-btn" id="nav-album" onclick="showPage('album')">
-    <span class="nav-icon">📷</span>memories
-  </button>
+  <button class="nav-btn active" id="nav-list" onclick="showPage('list')"><span class="nav-icon">✨</span>our list</button>
+  <button class="nav-btn" id="nav-album" onclick="showPage('album')"><span class="nav-icon">📷</span>memories</button>
 </nav>
 
-<!-- Lightbox -->
-<div id="lightbox">
-  <button id="lightbox-close" onclick="closeLightbox()">✕</button>
-  <img id="lightbox-img" src="" alt="" />
-</div>
-
+<div id="lightbox"><button id="lightbox-close" onclick="closeLightbox()">✕</button><img id="lightbox-img" src="" alt=""/></div>
 <div id="toast"></div>
 
 <script type="module">
-  import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, onValue, push, remove, update }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, onValue, push, remove, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   const firebaseConfig = {
-    apiKey:            "AIzaSyCUFKp7pnzvF4L1rvjdU3Uk-2TvT92tMO0",
-    authDomain:        "our-to-do-list-1a666.firebaseapp.com",
-    databaseURL:       "https://our-to-do-list-1a666-default-rtdb.firebaseio.com",
-    projectId:         "our-to-do-list-1a666",
-    storageBucket:     "our-to-do-list-1a666.firebasestorage.app",
-    messagingSenderId: "774503475826",
-    appId:             "1:774503475826:web:a14ac07ce0ecc08a6b30eb"
+    apiKey:"AIzaSyCUFKp7pnzvF4L1rvjdU3Uk-2TvT92tMO0",
+    authDomain:"our-to-do-list-1a666.firebaseapp.com",
+    databaseURL:"https://our-to-do-list-1a666-default-rtdb.firebaseio.com",
+    projectId:"our-to-do-list-1a666",
+    storageBucket:"our-to-do-list-1a666.firebasestorage.app",
+    messagingSenderId:"774503475826",
+    appId:"1:774503475826:web:a14ac07ce0ecc08a6b30eb"
   };
 
   const DEFAULTS = [
@@ -371,77 +303,142 @@
     {text:"Apple Halloumi Salad",emoji:"🥗"},{text:"Yogurt Bowl",emoji:"🍓"},
     {text:"Cinema",emoji:"🎬"},
   ];
-  const EMOJIS = ["☕","🍉","🐴","🍲","🥗","🍓","🎬","🎡","🏖️","🌮","🍜","🍰","🎭","🎸","🌿","🚴","🏊","🧁","🍕","🎳","🎨","🧘","🌸","🍦","🎲","🍣","🥂","🌙","🎠","🏔️","🫶","🌷","🧋","🪷","🎪"];
+  const EMOJIS=["☕","🍉","🐴","🍲","🥗","🍓","🎬","🎡","🏖️","🌮","🍜","🍰","🎭","🎸","🌿","🚴","🏊","🧁","🍕","🎳","🎨","🧘","🌸","🍦","🎲","🍣","🥂","🌙","🎠","🏔️","🫶","🌷","🧋","🪷","🎪"];
 
-  const app = initializeApp(firebaseConfig);
-  const db  = getDatabase(app);
-  const listRef = ref(db, "adventure-list");
+  const app=initializeApp(firebaseConfig);
+  const db=getDatabase(app);
+  const listRef=ref(db,"adventure-list");
+  let seeded=false, openId=null, prevDone=0;
 
-  let seeded=false, openPhotoId=null, prevDone=0;
-
-  onValue(listRef, snap => {
-    const data = snap.val();
-    if (!data) {
-      if (!seeded) { seeded=true; DEFAULTS.forEach(d => push(listRef,{...d,done:false,photos:{}})); }
-      return;
-    }
+  onValue(listRef,snap=>{
+    const data=snap.val();
+    if(!data){if(!seeded){seeded=true;DEFAULTS.forEach(d=>push(listRef,{...d,done:false,notes:"",photos:{}}));}return;}
     renderList(data);
     renderAlbum(data);
-  }, () => { document.getElementById("loading-msg").textContent="Connection error — please refresh."; });
+  },()=>{document.getElementById("loading-msg").textContent="Connection error — please refresh.";});
 
-  function renderList(data) {
-    const ul = document.getElementById("todo-list");
-    ul.innerHTML = "";
-    const entries = Object.entries(data);
-    const doneCount = entries.filter(([,v])=>v.done).length;
+  // ── RENDER LIST ────────────────────────────────────────
+  function renderList(data){
+    const ul=document.getElementById("todo-list");
+    ul.innerHTML="";
+    const entries=Object.entries(data);
+    const doneCount=entries.filter(([,v])=>v.done).length;
 
-    entries.forEach(([id,item],i) => {
-      const photos = item.photos ? Object.entries(item.photos) : [];
-      const li = document.createElement("li");
-      li.className = "item"+(item.done?" done":"");
-      li.style.animationDelay = (i*0.055)+"s";
-      li.innerHTML = `
+    entries.forEach(([id,item],i)=>{
+      const youPhotos=item.photos&&item.photos.youssef?Object.entries(item.photos.youssef):[];
+      const shahdPhotos=item.photos&&item.photos.shahd?Object.entries(item.photos.shahd):[];
+      const totalPhotos=youPhotos.length+shahdPhotos.length;
+
+      const li=document.createElement("li");
+      li.className="item"+(item.done?" done":"");
+      li.style.animationDelay=(i*0.055)+"s";
+
+      li.innerHTML=`
         <div class="item-row">
           <div class="check-circle">${item.done?"✓":""}</div>
-          <span class="item-emoji" title="tap to change emoji">${item.emoji}</span>
-          <input class="item-text" value="${esc(item.text)}" title="click to edit" />
-          <div class="item-actions">
-            <button class="photo-btn ${photos.length?"has-photo":""}">📷 ${photos.length||"add"}</button>
+          <span class="item-emoji" title="tap to change">${item.emoji}</span>
+          <input class="item-text" value="${esc(item.text)}" title="click to edit"/>
+          <div class="item-right">
+            <button class="expand-btn ${openId===id?"open":""}">
+              ${totalPhotos?"📷 "+totalPhotos:"details"} ${openId===id?"▲":"▼"}
+            </button>
             <button class="del-btn">✕</button>
           </div>
         </div>
-        <div class="photo-section ${openPhotoId===id?"open":""}" id="ps-${id}">
-          <div class="photo-grid" id="pg-${id}"></div>
-          <div class="upload-area">
-            <input type="file" accept="image/*" multiple id="fi-${id}" />
-            <span class="u-icon">🌸</span>
-            <div class="u-hint">tap to add a photo memory</div>
+        <div class="dropdown ${openId===id?"open":""}" id="dd-${id}">
+          <div class="notes-section">
+            <div class="notes-label"><span>📝</span> notes & memories</div>
+            <textarea class="notes-input" placeholder="write something about this adventure… how did it feel? any funny moments?">${esc(item.notes||"")}</textarea>
+            <button class="notes-save" data-id="${id}">save note ♡</button>
+          </div>
+          <div class="photos-section">
+            <div class="photos-label"><span>📷</span> your photos</div>
+            <div class="person-uploads">
+              <!-- Youssef slot -->
+              <div class="person-slot youssef">
+                <div class="person-slot-header">
+                  <span class="person-name">Youssef</span>
+                  <span>${youPhotos.length} photo${youPhotos.length!==1?"s":""}</span>
+                </div>
+                <div class="slot-photos" id="yp-${id}"></div>
+                <div class="slot-upload">
+                  <input type="file" accept="image/*" multiple id="yfi-${id}"/>
+                  <span class="s-icon">🌸</span>
+                  <div class="s-hint">add photo</div>
+                </div>
+              </div>
+              <!-- Shahd slot -->
+              <div class="person-slot shahd">
+                <div class="person-slot-header">
+                  <span class="person-name">Shahd</span>
+                  <span>${shahdPhotos.length} photo${shahdPhotos.length!==1?"s":""}</span>
+                </div>
+                <div class="slot-photos" id="sp-${id}"></div>
+                <div class="slot-upload">
+                  <input type="file" accept="image/*" multiple id="sfi-${id}"/>
+                  <span class="s-icon">🌷</span>
+                  <div class="s-hint">add photo</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>`;
 
-      const pg = li.querySelector(`#pg-${id}`);
-      photos.forEach(([pid,pd]) => {
-        const t = document.createElement("div"); t.className="photo-thumb";
-        t.innerHTML=`<img src="${pd.url}" /><button class="rm-ph">✕</button>`;
+      // Populate Youssef thumbs
+      const ypg=li.querySelector(`#yp-${id}`);
+      youPhotos.forEach(([pid,pd])=>{
+        const t=document.createElement("div");t.className="slot-thumb";
+        t.innerHTML=`<img src="${pd.url}"/><button class="rm-ph">✕</button>`;
         t.querySelector("img").addEventListener("click",()=>openLightbox(pd.url));
-        t.querySelector(".rm-ph").addEventListener("click",e=>{e.stopPropagation();remove(ref(db,`adventure-list/${id}/photos/${pid}`));showToast("photo removed");});
-        pg.appendChild(t);
+        t.querySelector(".rm-ph").addEventListener("click",e=>{e.stopPropagation();remove(ref(db,`adventure-list/${id}/photos/youssef/${pid}`));showToast("photo removed");});
+        ypg.appendChild(t);
+      });
+      // Populate Shahd thumbs
+      const spg=li.querySelector(`#sp-${id}`);
+      shahdPhotos.forEach(([pid,pd])=>{
+        const t=document.createElement("div");t.className="slot-thumb";
+        t.innerHTML=`<img src="${pd.url}"/><button class="rm-ph">✕</button>`;
+        t.querySelector("img").addEventListener("click",()=>openLightbox(pd.url));
+        t.querySelector(".rm-ph").addEventListener("click",e=>{e.stopPropagation();remove(ref(db,`adventure-list/${id}/photos/shahd/${pid}`));showToast("photo removed");});
+        spg.appendChild(t);
       });
 
+      // Events
       li.querySelector(".check-circle").addEventListener("click",()=>update(ref(db,`adventure-list/${id}`),{done:!item.done}));
-      const tx = li.querySelector(".item-text");
-      tx.addEventListener("blur",()=>{ const v=tx.value.trim(); if(v&&v!==item.text){update(ref(db,`adventure-list/${id}`),{text:v});showToast("saved ✓");} });
-      tx.addEventListener("keydown",e=>{ if(e.key==="Enter") tx.blur(); });
-      li.querySelector(".item-emoji").addEventListener("click",()=>{ const idx=EMOJIS.indexOf(item.emoji); update(ref(db,`adventure-list/${id}`),{emoji:EMOJIS[(idx+1)%EMOJIS.length]}); });
-      li.querySelector(".photo-btn").addEventListener("click",e=>{ e.stopPropagation(); openPhotoId=openPhotoId===id?null:id; document.querySelectorAll(".photo-section").forEach(p=>p.classList.remove("open")); if(openPhotoId===id) li.querySelector(`#ps-${id}`).classList.add("open"); });
-      li.querySelector(`#fi-${id}`).addEventListener("change",e=>{ Array.from(e.target.files).forEach(f=>uploadPhoto(f,id)); e.target.value=""; });
-      li.querySelector(".del-btn").addEventListener("click",e=>{ e.stopPropagation(); if(confirm(`Remove "${item.text}"?`)) remove(ref(db,`adventure-list/${id}`)); });
+      li.querySelector(".item-emoji").addEventListener("click",()=>{const idx=EMOJIS.indexOf(item.emoji);update(ref(db,`adventure-list/${id}`),{emoji:EMOJIS[(idx+1)%EMOJIS.length]});});
+      const tx=li.querySelector(".item-text");
+      tx.addEventListener("blur",()=>{const v=tx.value.trim();if(v&&v!==item.text){update(ref(db,`adventure-list/${id}`),{text:v});showToast("saved ✓");}});
+      tx.addEventListener("keydown",e=>{if(e.key==="Enter")tx.blur();});
+
+      li.querySelector(".expand-btn").addEventListener("click",e=>{
+        e.stopPropagation();
+        openId=openId===id?null:id;
+        document.querySelectorAll(".dropdown").forEach(d=>d.classList.remove("open"));
+        document.querySelectorAll(".expand-btn").forEach(b=>{b.classList.remove("open");b.innerHTML=b.innerHTML.replace("▲","▼");});
+        if(openId===id){
+          li.querySelector(`#dd-${id}`).classList.add("open");
+          const eb=li.querySelector(".expand-btn");
+          eb.classList.add("open");
+          eb.innerHTML=eb.innerHTML.replace("▼","▲");
+        }
+      });
+
+      li.querySelector(".notes-save").addEventListener("click",()=>{
+        const note=li.querySelector(".notes-input").value;
+        update(ref(db,`adventure-list/${id}`),{notes:note});
+        showToast("note saved ✓");
+      });
+
+      li.querySelector(`#yfi-${id}`).addEventListener("change",e=>{Array.from(e.target.files).forEach(f=>uploadPhoto(f,id,"youssef"));e.target.value="";});
+      li.querySelector(`#sfi-${id}`).addEventListener("change",e=>{Array.from(e.target.files).forEach(f=>uploadPhoto(f,id,"shahd"));e.target.value="";});
+
+      li.querySelector(".del-btn").addEventListener("click",e=>{e.stopPropagation();if(confirm(`Remove "${item.text}"?`))remove(ref(db,`adventure-list/${id}`));});
       ul.appendChild(li);
     });
 
-    if(doneCount>prevDone) launchConfetti();
+    if(doneCount>prevDone)launchConfetti();
     prevDone=doneCount;
-    const total=entries.length, pct=total===0?0:Math.round((doneCount/total)*100);
+    const total=entries.length,pct=total===0?0:Math.round((doneCount/total)*100);
     document.getElementById("progress-fill").style.width=pct+"%";
     document.getElementById("progress-count").textContent=doneCount+" / "+total;
     const msgs=["tap anything to get started 💕","your first adventure ✨","the fun is just beginning 🌸","halfway there, love 🍃","you two are unstoppable 🎉","almost done! ♡","one left — save the best 🌙","you did everything together 🥂"];
@@ -451,23 +448,109 @@
     document.getElementById("list-wrap").style.display="block";
   }
 
-  function renderAlbum(data) {
-    const el = document.getElementById("album-content");
-    const withPhotos = Object.entries(data).filter(([,v])=>v.photos&&Object.keys(v.photos).length>0);
-    if(!withPhotos.length){ el.innerHTML='<div class="album-empty">no memories yet — go make some! 🌸</div>'; return; }
+  // ── RENDER ALBUM ───────────────────────────────────────
+  function renderAlbum(data){
+    const el=document.getElementById("album-content");
+    const entries=Object.entries(data);
+    const hasContent=entries.filter(([,v])=>(v.notes&&v.notes.trim())||(v.photos&&(
+      (v.photos.youssef&&Object.keys(v.photos.youssef).length)||
+      (v.photos.shahd&&Object.keys(v.photos.shahd).length)
+    )));
+    if(!hasContent.length){el.innerHTML='<div class="album-empty">no memories yet — go make some! 🌸</div>';return;}
     el.innerHTML="";
-    withPhotos.forEach(([id,item])=>{
-      const photos=Object.entries(item.photos);
-      const div=document.createElement("div"); div.className="album-item";
-      div.innerHTML=`<div class="album-item-header"><span class="album-item-emoji">${item.emoji}</span><span class="album-item-title">${esc(item.text)}</span><span class="album-item-badge">${photos.length} photo${photos.length>1?"s":""}</span></div><div class="album-photo-grid" id="apg-${id}"></div>`;
-      const apg=div.querySelector(`#apg-${id}`);
-      photos.forEach(([,pd])=>{ const a=document.createElement("div"); a.className="album-photo"; a.innerHTML=`<img src="${pd.url}" loading="lazy"/>`; a.addEventListener("click",()=>openLightbox(pd.url)); apg.appendChild(a); });
-      el.appendChild(div);
+
+    hasContent.forEach(([id,item],cardIdx)=>{
+      const youPhotos=item.photos&&item.photos.youssef?Object.entries(item.photos.youssef):[];
+      const shahdPhotos=item.photos&&item.photos.shahd?Object.entries(item.photos.shahd):[];
+      const totalPhotos=youPhotos.length+shahdPhotos.length;
+
+      const card=document.createElement("div");
+      card.className="mem-card";
+      card.style.animationDelay=(cardIdx*0.08)+"s";
+
+      // Badges
+      const badges=[];
+      if(item.done) badges.push(`<span class="mem-badge done-badge">✓ done</span>`);
+      if(totalPhotos) badges.push(`<span class="mem-badge photo-badge">📷 ${totalPhotos} photo${totalPhotos!==1?"s":""}</span>`);
+      if(item.notes&&item.notes.trim()) badges.push(`<span class="mem-badge note-badge">📝 has notes</span>`);
+
+      card.innerHTML=`
+        <div class="mem-card-header">
+          <span class="mem-emoji">${item.emoji}</span>
+          <div class="mem-info">
+            <div class="mem-title">${esc(item.text)}</div>
+            <div class="mem-meta">${badges.join("")}</div>
+          </div>
+        </div>
+        ${item.notes&&item.notes.trim()?`
+        <div class="mem-notes">
+          <div class="mem-notes-label">📝 notes</div>
+          <div class="mem-notes-text">${esc(item.notes)}</div>
+        </div>`:""}
+        ${totalPhotos?`<div class="mem-photos">
+          <div class="mem-photos-label">photos <span class="photo-count">${totalPhotos} total</span></div>
+          ${youPhotos.length?`<div class="mem-person-section">
+            <div class="mem-person-header">
+              <div class="mem-person-dot y"></div>
+              <span class="mem-person-name">Youssef</span>
+              <span class="mem-person-count">${youPhotos.length} photo${youPhotos.length!==1?"s":""}</span>
+            </div>
+            <div class="photo-layout ${layoutClass(youPhotos.length)}" id="alb-y-${id}"></div>
+          </div>`:""}
+          ${shahdPhotos.length?`<div class="mem-person-section">
+            <div class="mem-person-header">
+              <div class="mem-person-dot s"></div>
+              <span class="mem-person-name">Shahd</span>
+              <span class="mem-person-count">${shahdPhotos.length} photo${shahdPhotos.length!==1?"s":""}</span>
+            </div>
+            <div class="photo-layout ${layoutClass(shahdPhotos.length)}" id="alb-s-${id}"></div>
+          </div>`:""}
+        </div>`:""}`;
+
+      // Populate album photo layouts
+      if(youPhotos.length){
+        const grid=card.querySelector(`#alb-y-${id}`);
+        const shown=Math.min(youPhotos.length,5);
+        youPhotos.slice(0,shown).forEach(([,pd],pi)=>{
+          const div=document.createElement("div");div.className="pl-ph";
+          if(pi===shown-1&&youPhotos.length>shown){
+            div.innerHTML=`<img src="${pd.url}" loading="lazy"/><div class="more-overlay">+${youPhotos.length-shown+1}</div>`;
+          } else {
+            div.innerHTML=`<img src="${pd.url}" loading="lazy"/>`;
+          }
+          div.addEventListener("click",()=>openLightbox(pd.url));
+          grid.appendChild(div);
+        });
+      }
+      if(shahdPhotos.length){
+        const grid=card.querySelector(`#alb-s-${id}`);
+        const shown=Math.min(shahdPhotos.length,5);
+        shahdPhotos.slice(0,shown).forEach(([,pd],pi)=>{
+          const div=document.createElement("div");div.className="pl-ph";
+          if(pi===shown-1&&shahdPhotos.length>shown){
+            div.innerHTML=`<img src="${pd.url}" loading="lazy"/><div class="more-overlay">+${shahdPhotos.length-shown+1}</div>`;
+          } else {
+            div.innerHTML=`<img src="${pd.url}" loading="lazy"/>`;
+          }
+          div.addEventListener("click",()=>openLightbox(pd.url));
+          grid.appendChild(div);
+        });
+      }
+      el.appendChild(card);
     });
   }
 
-  function uploadPhoto(file,id) {
-    if(file.size>4*1024*1024){showToast("image too large — try under 4MB");return;}
+  function layoutClass(n){
+    if(n===1)return"one";
+    if(n===2)return"two";
+    if(n===3)return"three";
+    if(n===4)return"four";
+    return"many";
+  }
+
+  // ── PHOTO UPLOAD ───────────────────────────────────────
+  function uploadPhoto(file,id,person){
+    if(file.size>5*1024*1024){showToast("image too large — try under 5MB");return;}
     showToast("saving photo… 🌸");
     const reader=new FileReader();
     reader.onload=ev=>{
@@ -475,11 +558,11 @@
       img.onload=()=>{
         const canvas=document.createElement("canvas");
         const ratio=Math.min(900/img.width,900/img.height,1);
-        canvas.width=img.width*ratio; canvas.height=img.height*ratio;
+        canvas.width=img.width*ratio;canvas.height=img.height*ratio;
         canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);
-        const compressed=canvas.toDataURL("image/jpeg",0.78);
-        push(ref(db,`adventure-list/${id}/photos`),{url:compressed,ts:Date.now()})
-          .then(()=>showToast("photo saved! 📷"))
+        const compressed=canvas.toDataURL("image/jpeg",.78);
+        push(ref(db,`adventure-list/${id}/photos/${person}`),{url:compressed,ts:Date.now()})
+          .then(()=>showToast(`photo saved for ${person==="youssef"?"Youssef 🌸":"Shahd 🌷"}`))
           .catch(()=>showToast("couldn't save — try a smaller image"));
       };
       img.src=ev.target.result;
@@ -487,15 +570,16 @@
     reader.readAsDataURL(file);
   }
 
+  // ── ADD ITEM ───────────────────────────────────────────
   document.getElementById("add-confirm").addEventListener("click",addItem);
   document.getElementById("new-text").addEventListener("keydown",e=>{if(e.key==="Enter")addItem();});
   function addItem(){
     const text=document.getElementById("new-text").value.trim();
     const emoji=document.getElementById("selected-emoji").textContent;
     if(!text){document.getElementById("new-text").focus();return;}
-    push(listRef,{text,emoji,done:false,photos:{}});
+    push(listRef,{text,emoji,done:false,notes:"",photos:{}});
     document.getElementById("new-text").value="";
-    closePanel(); showToast(`"${text}" added! 🌸`);
+    closePanel();showToast(`"${text}" added! 🌸`);
   }
   document.getElementById("add-open-btn").addEventListener("click",()=>{
     document.getElementById("add-panel").style.display="block";
@@ -512,37 +596,37 @@
 
   const grid=document.getElementById("emoji-grid");
   EMOJIS.forEach(e=>{
-    const btn=document.createElement("button"); btn.className="emoji-opt"; btn.textContent=e;
-    btn.addEventListener("click",()=>{ document.getElementById("selected-emoji").textContent=e; grid.style.display="none"; });
+    const btn=document.createElement("button");btn.className="emoji-opt";btn.textContent=e;
+    btn.addEventListener("click",()=>{document.getElementById("selected-emoji").textContent=e;grid.style.display="none";});
     grid.appendChild(btn);
   });
-  document.getElementById("emoji-trigger").addEventListener("click",()=>{ grid.style.display=grid.style.display==="flex"?"none":"flex"; });
+  document.getElementById("emoji-trigger").addEventListener("click",()=>{grid.style.display=grid.style.display==="flex"?"none":"flex";});
 
+  // ── UTILS ──────────────────────────────────────────────
   window.showToast=function(msg){
     const t=document.getElementById("toast");
-    t.textContent=msg; t.style.opacity="1"; t.style.transform="translateX(-50%) translateY(0)";
-    setTimeout(()=>{ t.style.opacity="0"; t.style.transform="translateX(-50%) translateY(16px)"; },2400);
+    t.textContent=msg;t.style.opacity="1";t.style.transform="translateX(-50%) translateY(0)";
+    setTimeout(()=>{t.style.opacity="0";t.style.transform="translateX(-50%) translateY(16px)";},2400);
   };
-  window.openLightbox=function(url){ document.getElementById("lightbox-img").src=url; document.getElementById("lightbox").classList.add("open"); };
-  window.closeLightbox=function(){ document.getElementById("lightbox").classList.remove("open"); };
-  document.getElementById("lightbox").addEventListener("click",e=>{ if(e.target===document.getElementById("lightbox")) closeLightbox(); });
+  window.openLightbox=function(url){document.getElementById("lightbox-img").src=url;document.getElementById("lightbox").classList.add("open");};
+  window.closeLightbox=function(){document.getElementById("lightbox").classList.remove("open");};
+  document.getElementById("lightbox").addEventListener("click",e=>{if(e.target===document.getElementById("lightbox"))closeLightbox();});
 
   function launchConfetti(){
     const canvas=document.getElementById("confetti-canvas");
     const ctx=canvas.getContext("2d");
-    canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+    canvas.width=window.innerWidth;canvas.height=window.innerHeight;
     const colors=["#E8A598","#F5DDD9","#A8B89C","#5C3D35","#FEFAF7","#D4A3C7"];
     const ps=Array.from({length:90},()=>({x:Math.random()*canvas.width,y:-10,r:Math.random()*6+3,color:colors[Math.floor(Math.random()*colors.length)],vx:(Math.random()-.5)*3.5,vy:Math.random()*3+2,rot:Math.random()*360,vr:(Math.random()-.5)*6,shape:Math.random()>.5?"circle":"rect"}));
     let n=0;
-    function draw(){ ctx.clearRect(0,0,canvas.width,canvas.height); ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.color;ctx.globalAlpha=Math.max(0,1-n/130);if(p.shape==="circle"){ctx.beginPath();ctx.arc(0,0,p.r,0,Math.PI*2);ctx.fill();}else{ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r);}ctx.restore();}); n++; if(n<135) requestAnimationFrame(draw); else ctx.clearRect(0,0,canvas.width,canvas.height); }
+    function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.color;ctx.globalAlpha=Math.max(0,1-n/130);if(p.shape==="circle"){ctx.beginPath();ctx.arc(0,0,p.r,0,Math.PI*2);ctx.fill();}else{ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r);}ctx.restore();});n++;if(n<135)requestAnimationFrame(draw);else ctx.clearRect(0,0,canvas.width,canvas.height);}
     draw();
   }
 
-  function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 </script>
 
 <script>
-  // ── Page nav ──
   window.showPage=function(page){
     document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
     document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
@@ -550,42 +634,38 @@
     document.getElementById("nav-"+page).classList.add("active");
   };
 
-  // ── Custom cursor ──
-  const cursor      = document.getElementById("cursor");
-  const cursorTrail = document.getElementById("cursor-trail");
-  let mx=0, my=0;
-  document.addEventListener("mousemove", e=>{
-    mx=e.clientX; my=e.clientY;
-    cursor.style.left = mx+"px";
-    cursor.style.top  = my+"px";
-    setTimeout(()=>{ cursorTrail.style.left=mx+"px"; cursorTrail.style.top=my+"px"; },80);
+  // Cursor
+  const cursor=document.getElementById("cursor"),trail=document.getElementById("cursor-trail");
+  let mx=0,my=0;
+  document.addEventListener("mousemove",e=>{
+    mx=e.clientX;my=e.clientY;
+    cursor.style.left=mx+"px";cursor.style.top=my+"px";
+    setTimeout(()=>{trail.style.left=mx+"px";trail.style.top=my+"px";},80);
   });
-  document.addEventListener("mousedown",()=>{ cursor.style.transform="translate(-50%,-50%) scale(0.8)"; });
-  document.addEventListener("mouseup",()=>{ cursor.style.transform="translate(-50%,-50%) scale(1)"; });
+  document.addEventListener("mousedown",()=>{cursor.style.transform="translate(-50%,-50%) scale(.78)";});
+  document.addEventListener("mouseup",()=>{cursor.style.transform="translate(-50%,-50%) scale(1)";});
 
-  // ── Sparkle on click ──
-  document.addEventListener("click", e=>{
-    const sparks=["✨","💕","🌸","♡","🌷"];
-    const s=document.createElement("div");
-    s.className="sparkle";
-    s.textContent=sparks[Math.floor(Math.random()*sparks.length)];
-    s.style.left=e.clientX+"px"; s.style.top=e.clientY+"px";
-    document.body.appendChild(s);
-    setTimeout(()=>s.remove(), 650);
+  // Sparkle
+  document.addEventListener("click",e=>{
+    const s=["✨","💕","🌸","♡","🌷","💫"];
+    const el=document.createElement("div");
+    el.className="sparkle";el.textContent=s[Math.floor(Math.random()*s.length)];
+    el.style.left=e.clientX+"px";el.style.top=e.clientY+"px";
+    document.body.appendChild(el);setTimeout(()=>el.remove(),650);
   });
 
-  // ── Floating background hearts ──
-  const fh = document.getElementById("float-hearts");
-  const heartSymbols = ["♡","💕","🌸","✨","🌷"];
-  for(let i=0;i<18;i++){
-    const h=document.createElement("div"); h.className="fh";
-    h.textContent=heartSymbols[Math.floor(Math.random()*heartSymbols.length)];
-    h.style.left=Math.random()*100+"%";
-    h.style.animationDuration=(10+Math.random()*18)+"s";
-    h.style.animationDelay=(Math.random()*16)+"s";
-    h.style.fontSize=(.6+Math.random()*.8)+"rem";
-    fh.appendChild(h);
-  }
+  // Floating hearts
+  const fh=document.getElementById("float-hearts");
+  ["♡","💕","🌸","✨","🌷","🫶"].forEach((sym,i)=>{
+    for(let j=0;j<3;j++){
+      const h=document.createElement("div");h.className="fh";h.textContent=sym;
+      h.style.left=Math.random()*100+"%";
+      h.style.animationDuration=(12+Math.random()*16)+"s";
+      h.style.animationDelay=(Math.random()*20)+"s";
+      h.style.fontSize=(.5+Math.random()*.7)+"rem";
+      fh.appendChild(h);
+    }
+  });
 </script>
 </body>
 </html>
