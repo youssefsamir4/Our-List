@@ -49,7 +49,13 @@
     .item.done { background:#EFF6EC; border-color:var(--sage); }
     .item.done:hover { border-color:var(--sage); }
     @keyframes itemIn { from{opacity:0;transform:translateX(-12px)} to{opacity:1;transform:translateX(0)} }
-    .item-row { display:flex; align-items:center; gap:12px; padding:14px 14px 14px 16px; }
+    .item-row { display:flex; align-items:center; gap:12px; padding:14px 14px 14px 10px; }
+    .drag-handle { flex-shrink:0; display:flex; flex-direction:column; gap:3px; padding:4px 6px; border-radius:6px; transition:background .15s; touch-action:none; }
+    .drag-handle:hover { background:rgba(232,165,152,.2); }
+    .drag-handle span { display:block; width:16px; height:2px; background:#C4A49E; border-radius:2px; transition:background .15s; }
+    .drag-handle:hover span { background:var(--rose); }
+    .item.dragging { opacity:.45; transform:scale(.98); border-color:var(--rose) !important; box-shadow:0 8px 28px rgba(232,165,152,.3) !important; transition:none !important; }
+    .item.drag-over { border-color:var(--rose) !important; box-shadow:0 0 0 2px var(--rose) !important; transform:translateY(-2px) !important; }
     .check-circle { flex-shrink:0; width:24px; height:24px; border-radius:50%; border:2px solid var(--rose); background:white; display:flex; align-items:center; justify-content:center; font-size:12px; color:white; font-weight:700; transition:background .22s,border-color .22s,transform .2s,box-shadow .2s; }
     .check-circle:hover { transform:scale(1.2); box-shadow:0 0 0 4px rgba(232,165,152,.25); }
     .item.done .check-circle { background:var(--sage); border-color:var(--sage); }
@@ -471,7 +477,7 @@
 
   onValue(listRef,snap=>{
     const data=snap.val();
-    if(!data){if(!seeded){seeded=true;DEFAULTS.forEach(d=>push(listRef,{...d,done:false,notes:"",photos:{}}));}return;}
+    if(!data){if(!seeded){seeded=true;DEFAULTS.forEach((d,i)=>push(listRef,{...d,done:false,notes:"",photos:{},order:i}));}return;}
     renderList(data);
     renderAlbum(data);
   },()=>{document.getElementById("loading-msg").textContent="Connection error — please refresh.";});
@@ -480,7 +486,7 @@
   function renderList(data){
     const ul=document.getElementById("todo-list");
     ul.innerHTML="";
-    const entries=Object.entries(data);
+    const entries=Object.entries(data).sort(([,a],[,b])=>(a.order??999)-(b.order??999));
     const doneCount=entries.filter(([,v])=>v.done).length;
 
     entries.forEach(([id,item],i)=>{
@@ -491,9 +497,11 @@
       const li=document.createElement("li");
       li.className="item"+(item.done?" done":"");
       li.style.animationDelay=(i*0.055)+"s";
+      li.dataset.id=id;
 
       li.innerHTML=`
         <div class="item-row">
+          <div class="drag-handle" title="hold to drag"><span></span><span></span><span></span></div>
           <div class="check-circle">${item.done?"✓":""}</div>
           <span class="item-emoji" title="tap to change">${item.emoji}</span>
           <input class="item-text" value="${esc(item.text)}" title="click to edit"/>
@@ -593,6 +601,81 @@
 
       li.querySelector(".del-btn").addEventListener("click",e=>{e.stopPropagation();if(confirm(`Remove "${item.text}"?`))remove(ref(db,`adventure-list/${id}`));});
       ul.appendChild(li);
+
+      // ── Drag & drop (desktop + touch) ──────────────────
+      const handle = li.querySelector('.drag-handle');
+      let dragSrc = null;
+
+      // Desktop drag
+      li.setAttribute('draggable', 'false'); // handle-only
+      handle.addEventListener('mousedown', () => { li.setAttribute('draggable','true'); });
+      li.addEventListener('dragstart', e => {
+        dragSrc = li;
+        li.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      li.addEventListener('dragend', () => {
+        li.classList.remove('dragging');
+        li.setAttribute('draggable','false');
+        document.querySelectorAll('.item').forEach(el=>el.classList.remove('drag-over'));
+        saveDragOrder();
+      });
+      li.addEventListener('dragover', e => {
+        e.preventDefault();
+        if(li !== dragSrc){ document.querySelectorAll('.item').forEach(el=>el.classList.remove('drag-over')); li.classList.add('drag-over'); }
+      });
+      li.addEventListener('drop', e => {
+        e.preventDefault();
+        if(dragSrc && dragSrc !== li){
+          const allItems = [...ul.querySelectorAll('.item')];
+          const fromIdx = allItems.indexOf(dragSrc);
+          const toIdx   = allItems.indexOf(li);
+          if(fromIdx < toIdx) li.after(dragSrc); else li.before(dragSrc);
+        }
+        li.classList.remove('drag-over');
+      });
+
+      // Touch drag
+      let touchClone=null, touchOffX=0, touchOffY=0, touchTarget=null;
+      handle.addEventListener('touchstart', e => {
+        const touch=e.touches[0];
+        const rect=li.getBoundingClientRect();
+        touchOffX=touch.clientX-rect.left; touchOffY=touch.clientY-rect.top;
+        touchTarget=li;
+        touchClone=li.cloneNode(true);
+        touchClone.style.cssText=`position:fixed;left:${rect.left}px;top:${rect.top}px;width:${rect.width}px;opacity:.75;pointer-events:none;z-index:9000;border-radius:18px;box-shadow:0 12px 32px rgba(92,61,53,.25);transform:scale(1.02);transition:none;`;
+        document.body.appendChild(touchClone);
+        li.classList.add('dragging');
+        e.preventDefault();
+      },{passive:false});
+      handle.addEventListener('touchmove', e => {
+        if(!touchClone) return;
+        const touch=e.touches[0];
+        touchClone.style.left=(touch.clientX-touchOffX)+'px';
+        touchClone.style.top=(touch.clientY-touchOffY)+'px';
+        document.querySelectorAll('.item').forEach(el=>el.classList.remove('drag-over'));
+        const el=document.elementFromPoint(touch.clientX,touch.clientY);
+        const over=el&&el.closest('.item');
+        if(over&&over!==touchTarget) over.classList.add('drag-over');
+        e.preventDefault();
+      },{passive:false});
+      handle.addEventListener('touchend', e => {
+        if(!touchClone) return;
+        const touch=e.changedTouches[0];
+        const el=document.elementFromPoint(touch.clientX,touch.clientY);
+        const over=el&&el.closest('.item');
+        if(over&&over!==touchTarget){
+          const allItems=[...ul.querySelectorAll('.item')];
+          const fromIdx=allItems.indexOf(touchTarget);
+          const toIdx=allItems.indexOf(over);
+          if(fromIdx<toIdx) over.after(touchTarget); else over.before(touchTarget);
+        }
+        touchClone.remove(); touchClone=null;
+        touchTarget.classList.remove('dragging');
+        document.querySelectorAll('.item').forEach(el=>el.classList.remove('drag-over'));
+        saveDragOrder();
+        touchTarget=null;
+      });
     });
 
     if(doneCount>prevDone)launchConfetti();
@@ -605,6 +688,16 @@
     document.getElementById("footer-note").textContent=msgs[idx];
     document.getElementById("loading-msg").style.display="none";
     document.getElementById("list-wrap").style.display="block";
+  }
+
+  // ── SAVE DRAG ORDER ──────────────────────────────────────
+  function saveDragOrder(){
+    const ul=document.getElementById("todo-list");
+    const items=[...ul.querySelectorAll(".item")];
+    items.forEach((el,i)=>{
+      const id=el.dataset.id;
+      if(id) update(ref(db,`adventure-list/${id}`),{order:i});
+    });
   }
 
   // ── RENDER ALBUM ───────────────────────────────────────
@@ -719,7 +812,8 @@
     const text=document.getElementById("new-text").value.trim();
     const emoji=document.getElementById("selected-emoji").textContent;
     if(!text){document.getElementById("new-text").focus();return;}
-    push(listRef,{text,emoji,done:false,notes:"",photos:{}});
+    const allLis=document.querySelectorAll('#todo-list .item');
+    push(listRef,{text,emoji,done:false,notes:"",photos:{},order:allLis.length});
     document.getElementById("new-text").value="";
     closePanel();showToast(`"${text}" added! 🌸`);
   }
